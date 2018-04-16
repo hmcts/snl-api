@@ -23,6 +23,6 @@ public class GetWelcomeTest {
     public void should_welcome_upon_root_request_with_200_response_code() throws Exception {
         MvcResult response = mockMvc.perform(get("/")).andExpect(status().isOk()).andReturn();
 
-        assertThat(response.getResponse().getContentAsString()).startsWith("Welcome");
+        assertThat(response.getResponse().getContentAsString()).containsIgnoringCase("Welcome");
     }
 }
