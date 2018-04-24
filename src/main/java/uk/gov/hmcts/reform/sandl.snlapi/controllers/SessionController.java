@@ -15,7 +15,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * Default endpoints per application.
  */
 @RestController
-public class RootController {
+public class SessionController {
 
     /**
      * Root GET endpoint.
