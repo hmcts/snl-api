@@ -1,35 +1,17 @@
 package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.springframework.http.ResponseEntity.ok;
-
 /**
  * Default endpoints per application.
  */
 @RestController
 public class SessionController {
-
-    /**
-     * Root GET endpoint.
-     *
-     * <p>Azure application service has a hidden feature of making requests to root endpoint when
-     * "Always On" is turned on.
-     * This is the endpoint to deal with that and therefore silence the unnecessary 404s as a response code.
-     *
-     * @return Welcome message from the service.
-     */
-    @GetMapping
-    public ResponseEntity<String> welcome() {
-        return ok("Welcome to snl-api");
-    }
 
     @CrossOrigin
     @RequestMapping(path = "/get-sessions", method = RequestMethod.GET, produces = "application/json")
