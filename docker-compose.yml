@@ -18,5 +18,6 @@ services:
       - REFORM_SERVICE_NAME
       - REFORM_TEAM
       - REFORM_ENVIRONMENT
+      - SNL_EVENTS_URL=http://localhost:8092
     ports:
       - $SERVER_PORT:$SERVER_PORT

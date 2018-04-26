@@ -12,6 +12,6 @@ module "snl-api" {
   additional_host_name = "${var.external_host_name}"
 
   app_settings = {
-
+   SNL_EVENTS_URL = "http://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
   }
 }
