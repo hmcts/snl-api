@@ -1,6 +1,9 @@
 server:
   port: 8090
 
+communication:
+  eventsUrl: ${SNL_EVENTS_URL:http://localhost:8092}
+
 management:
   security:
     enabled: ${MANAGEMENT_SECURITY_ENABLED:true}
