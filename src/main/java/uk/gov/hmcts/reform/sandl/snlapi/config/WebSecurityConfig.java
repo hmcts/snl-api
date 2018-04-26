@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
                 .antMatchers("/security").hasRole("USER")
-                .antMatchers("/get-sessions").hasRole("USER")
+                .antMatchers("/sessions").hasRole("USER")
             .and()
             .authorizeRequests()
                 .anyRequest().authenticated()
