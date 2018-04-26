@@ -15,6 +15,8 @@ public class EventsCommunicationService {
     private String eventsUrl;
 
     public ResponseEntity<String> makeCall(String endpointWithParams, HttpMethod httpMethod, String... params) {
-        return REST_TEMPLATE.exchange(eventsUrl + endpointWithParams, httpMethod, null, String.class, params);
+        return REST_TEMPLATE.exchange(
+            eventsUrl + endpointWithParams, httpMethod, null, String.class, new Object[]{params}
+        );
     }
 }
