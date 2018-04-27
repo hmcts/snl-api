@@ -26,8 +26,8 @@ public class SessionController {
 
     @CrossOrigin
     @ResponseBody
-    @RequestMapping(path = "/sessions", method = RequestMethod.PUT, consumes = {"application/json"})
+    @RequestMapping(path = "/sessions", method = RequestMethod.PUT, produces = "application/json")
     public String insertSession(@RequestBody String session) throws IOException {
-        return eventsCommunicationService.makeCall("/sessions", HttpMethod.PUT, session).getBody();
+        return eventsCommunicationService.makePutCall("/sessions", HttpMethod.PUT, session).getBody();
     }
 }
