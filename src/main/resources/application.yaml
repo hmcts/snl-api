@@ -2,7 +2,7 @@ server:
   port: 8090
 
 communication:
-  eventsUrl: ${SNL_EVENTS_URL:http://localhost:8092}
+  eventsUrl: ${SNL_EVENTS_URL:http://localhost:8082}
 
 management:
   security:
