@@ -29,9 +29,9 @@ public class SessionController {
     }
 
     @CrossOrigin
-    @RequestMapping(path = "/sessions", method = RequestMethod.PUT)
+    @RequestMapping(path = "/sessions", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity insertSession(@RequestBody String session) throws IOException {
         eventsCommunicationService.makePutCall("/sessions", session);
-        return ok("OK");
+        return ok("{\"status\": \"Created\"}");
     }
 }
