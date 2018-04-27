@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import java.io.IOException;
+
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 public class SessionController {
 
@@ -25,9 +29,9 @@ public class SessionController {
     }
 
     @CrossOrigin
-    @ResponseBody
-    @RequestMapping(path = "/sessions", method = RequestMethod.PUT, produces = "application/json")
-    public String insertSession(@RequestBody String session) throws IOException {
-        return eventsCommunicationService.makePutCall("/sessions", HttpMethod.PUT, session).getBody();
+    @RequestMapping(path = "/sessions", method = RequestMethod.PUT)
+    public ResponseEntity insertSession(@RequestBody String session) throws IOException {
+        eventsCommunicationService.makePutCall("/sessions", session);
+        return ok("OK");
     }
 }

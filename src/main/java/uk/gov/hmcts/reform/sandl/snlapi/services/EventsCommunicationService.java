@@ -11,31 +11,23 @@ import java.util.List;
 @Service
 public class EventsCommunicationService {
 
-    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${communication.eventsUrl:http://localhost:8092}")
     private String eventsUrl;
 
     public ResponseEntity<String> makeCall(String endpointWithParams, HttpMethod httpMethod, String... params) {
-        return REST_TEMPLATE.exchange(
+        return restTemplate.exchange(
             eventsUrl + endpointWithParams, httpMethod, null, String.class, new Object[]{params}
         );
     }
 
-    public ResponseEntity<String> makePutCall(String endpointWithParams, HttpMethod httpMethod, String params) {
+    public void makePutCall(String endpointWithParams, String params) {
 
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-        acceptableMediaTypes.add(MediaType.APPLICATION_JSON); // Set what you need
-
-        // Prepare header
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(acceptableMediaTypes);
-        HttpEntity<String> entity = new HttpEntity<String>(params, headers);
+        HttpEntity<String> entity = new HttpEntity<>(params, headers);
 
-
-        return REST_TEMPLATE.exchange(
-            eventsUrl + endpointWithParams, httpMethod, entity, String.class
-        );
+        restTemplate.put(eventsUrl + endpointWithParams, entity, String.class);
     }
 }
