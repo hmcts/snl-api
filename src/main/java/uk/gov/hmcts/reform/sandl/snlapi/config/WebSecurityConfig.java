@@ -20,19 +20,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
             .authorizeRequests()
-                .antMatchers("/", "/login").permitAll()
-            .and()
+                .antMatchers("/", "/health", "/login").permitAll()
+                .and()
             .authorizeRequests()
                 .antMatchers("/security").hasRole("USER")
                 .antMatchers("/sessions").hasRole("USER")
-            .and()
+                .and()
             .authorizeRequests()
                 .anyRequest().authenticated()
-            .and()
+                .and()
             .httpBasic()
-            .and().csrf()
-            .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            .ignoringAntMatchers("/logout/**")
+                .and()
+            .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .ignoringAntMatchers("/logout/**")
+                .and()
+            .cors()
         ;
     }
 

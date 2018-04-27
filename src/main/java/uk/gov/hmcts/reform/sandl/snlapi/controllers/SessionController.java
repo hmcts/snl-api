@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +15,6 @@ public class SessionController {
     @Autowired
     private EventsCommunicationService eventsCommunicationService;
 
-    @CrossOrigin
     @RequestMapping(path = "/sessions", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getSessions(@RequestParam("date") String date) {
