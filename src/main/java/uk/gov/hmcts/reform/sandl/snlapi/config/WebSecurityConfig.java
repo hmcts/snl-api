@@ -40,11 +40,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        builder.inMemoryAuthentication()
-            .withUser("officer1").password("asd").roles("USER", "OFFICER").and()
-            .withUser("judge1").password("asd").roles("USER", "JUDGE").and()
-            .withUser("admin").password("asd").roles("USER", "ADMIN");
+    public void configureGlobal(AuthenticationManagerBuilder builder) {
+        try {
+            builder.inMemoryAuthentication()
+                .withUser("officer1").password("asd").roles("USER", "OFFICER").and()
+                .withUser("judge1").password("asd").roles("USER", "JUDGE").and()
+                .withUser("admin").password("asd").roles("USER", "ADMIN");
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot use hardcoded values", e);
+        }
     }
 
 }
