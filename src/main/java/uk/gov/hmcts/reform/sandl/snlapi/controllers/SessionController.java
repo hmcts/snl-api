@@ -17,10 +17,18 @@ public class SessionController {
     @Autowired
     private EventsCommunicationService eventsCommunicationService;
 
-    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "", params = "date", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getSessions(@RequestParam("date") String date) {
         return eventsCommunicationService.makeCall("/sessions?date={date}", HttpMethod.GET, date).getBody();
+    }
+
+    @GetMapping(path = "", params = {"startDate", "endDate"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getSessions(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        return eventsCommunicationService.makeCall("/sessions?startDate={startDate}&endDate={endDate}",
+            HttpMethod.GET, startDate, endDate
+        ).getBody();
     }
 
     @GetMapping(path = "/judge-diary", produces = MediaType.APPLICATION_JSON_VALUE)
