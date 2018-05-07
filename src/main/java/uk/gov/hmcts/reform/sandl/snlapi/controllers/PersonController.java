@@ -26,6 +26,7 @@ public class PersonController {
     @GetMapping(path = "", params = "personType", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getJudges(@RequestParam("personType") String personType) {
-        return eventsCommunicationService.makeCall("/person?personType={personType}", HttpMethod.GET, personType).getBody();
+        return eventsCommunicationService.makeCall("/person?personType={personType}",
+            HttpMethod.GET, personType).getBody();
     }
 }
