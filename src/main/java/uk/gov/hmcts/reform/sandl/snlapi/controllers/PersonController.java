@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 @RestController
-@RequestMapping("/persons")
+@RequestMapping("/person")
 public class PersonController {
 
     @Autowired
@@ -20,12 +20,12 @@ public class PersonController {
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getPersons() {
-        return eventsCommunicationService.makeCall("/persons", HttpMethod.GET).getBody();
+        return eventsCommunicationService.makeCall("/person", HttpMethod.GET).getBody();
     }
 
     @GetMapping(path = "", params = "personType", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getJudges(@RequestParam("personType") String personType) {
-        return eventsCommunicationService.makeCall("/persons?personType={personType}", HttpMethod.GET, personType).getBody();
+        return eventsCommunicationService.makeCall("/person?personType={personType}", HttpMethod.GET, personType).getBody();
     }
 }

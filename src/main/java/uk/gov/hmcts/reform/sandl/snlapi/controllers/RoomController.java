@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 @RestController
-@RequestMapping("/rooms")
+@RequestMapping("/room")
 public class RoomController {
 
     @Autowired
@@ -19,6 +19,6 @@ public class RoomController {
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRooms() {
-        return eventsCommunicationService.makeCall("/rooms", HttpMethod.GET).getBody();
+        return eventsCommunicationService.makeCall("/room", HttpMethod.GET).getBody();
     }
 }
