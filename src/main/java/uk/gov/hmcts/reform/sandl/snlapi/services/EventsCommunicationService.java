@@ -24,11 +24,11 @@ public class EventsCommunicationService {
         );
     }
 
-    public void makePutCall(String endpointWithParams, String params) {
+    public ResponseEntity<String> makePutCall(String endpointWithParams, String params) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(params, headers);
 
-        REST_TEMPLATE.put(eventsUrl + endpointWithParams, entity, String.class);
+        return REST_TEMPLATE.exchange(eventsUrl + endpointWithParams, HttpMethod.PUT, entity, String.class);
     }
 }
