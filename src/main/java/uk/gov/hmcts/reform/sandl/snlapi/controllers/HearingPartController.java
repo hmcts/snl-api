@@ -34,10 +34,10 @@ public class HearingPartController {
 
     @PutMapping(path = "{hearingPartId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity upsertHearingPart(@PathVariable String hearingPartId,
-                                            @RequestBody String hearingPart) {
+    public ResponseEntity assignHearingPartToSession(@PathVariable String hearingPartId,
+                                            @RequestBody String assignment) {
         return eventsCommunicationService.makePutCall("/hearing-part/{hearingPartId}",
-            hearingPart, hearingPartId);
+            assignment, hearingPartId);
     }
 }
 
