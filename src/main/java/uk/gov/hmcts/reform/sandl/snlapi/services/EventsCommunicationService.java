@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
 @Service
 public class EventsCommunicationService {
 
@@ -24,11 +23,11 @@ public class EventsCommunicationService {
         );
     }
 
-    public ResponseEntity<String> makePutCall(String endpointWithParams, String params) {
+    public ResponseEntity<String> makePutCall(String endpointWithParams, String body, String... params) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(params, headers);
+        HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
-        return REST_TEMPLATE.exchange(eventsUrl + endpointWithParams, HttpMethod.PUT, entity, String.class);
+        return REST_TEMPLATE.exchange(eventsUrl + endpointWithParams, HttpMethod.PUT, entity, String.class, params);
     }
 }
