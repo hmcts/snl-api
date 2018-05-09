@@ -5,15 +5,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
-
-import static org.springframework.http.ResponseEntity.ok;
-
 
 @RestController
 @RequestMapping("/hearing-part")
@@ -32,6 +30,14 @@ public class HearingPartController {
     @ResponseBody
     public ResponseEntity upsertHearingPart(@RequestBody String hearingPart) {
         return eventsCommunicationService.makePutCall("/hearing-part", hearingPart);
+    }
+
+    @PutMapping(path = "{hearingPartId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity upsertHearingPart(@PathVariable String hearingPartId,
+                                            @RequestBody String hearingPart) {
+        return eventsCommunicationService.makePutCall("/hearing-part/{hearingPartId}",
+            hearingPart, hearingPartId);
     }
 }
 
