@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
-import javafx.util.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +19,7 @@ public class SecurityController {
     }
 
     @GetMapping(value = "/csrftoken", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Pair token(@CookieValue("XSRF-TOKEN") String token) {
-        return new Pair("token", token);
+    public String[] token(@CookieValue("XSRF-TOKEN") String token) {
+        return new String[] { token };
     }
 }
