@@ -24,10 +24,10 @@ public class ProblemController {
     }
 
 
-    @GetMapping(path = "by-reference-type-id", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "by-entity-id", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    String getProblemsByReferenceTypeId(@RequestParam("id") String id) {
-        return eventsCommunicationService.makeCall("/problems/by-reference-type-id?id={id}",
+    String getProblemsByReferenceEntityId(@RequestParam("id") String id) {
+        return eventsCommunicationService.makeCall("/problems/by-entity-id?id={id}",
             HttpMethod.GET, id).getBody();
     }
 
