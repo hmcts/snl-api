@@ -31,4 +31,10 @@ public class ProblemController {
             HttpMethod.GET, id).getBody();
     }
 
+    @GetMapping(path = "by-user-transaction-id", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    String getProblemsByUserTransactionId(@RequestParam("id") String id) {
+        return eventsCommunicationService.makeCall("/problems/by-user-transaction-id?id={id}",
+            HttpMethod.GET, id).getBody();
+    }
 }
