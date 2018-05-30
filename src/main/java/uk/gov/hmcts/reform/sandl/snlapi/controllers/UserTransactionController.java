@@ -18,6 +18,6 @@ public class UserTransactionController {
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getUserTransactionById(@PathVariable("id") String id) {
-        return eventsCommunicationService.makeCall("/usertransactions/{id}", HttpMethod.GET, id).getBody();
+        return eventsCommunicationService.makeCall("/user-transaction/{id}", HttpMethod.GET, id).getBody();
     }
 }
