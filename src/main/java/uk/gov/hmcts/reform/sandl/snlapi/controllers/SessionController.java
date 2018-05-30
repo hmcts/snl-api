@@ -42,9 +42,9 @@ public class SessionController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity insertSession(@RequestBody String session) throws IOException {
-        eventsCommunicationService.makePutCall("/sessions", session);
-        return ok("{\"status\": \"Created\"}");
+    public ResponseEntity insertSession(@RequestBody String session) {
+        ResponseEntity e = eventsCommunicationService.makePutCall("/sessions", session);
+        return e;
     }
 
     @GetMapping(path = "/judge-diary", produces = MediaType.APPLICATION_JSON_VALUE)
