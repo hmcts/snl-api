@@ -13,10 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
-import java.io.IOException;
-
-import static org.springframework.http.ResponseEntity.ok;
-
 @RestController
 @RequestMapping("/sessions")
 public class SessionController {
@@ -42,9 +38,8 @@ public class SessionController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = "application/json")
-    public ResponseEntity insertSession(@RequestBody String session) throws IOException {
-        eventsCommunicationService.makePutCall("/sessions", session);
-        return ok("{\"status\": \"Created\"}");
+    public ResponseEntity insertSession(@RequestBody String session) {
+        return eventsCommunicationService.makePutCall("/sessions", session);
     }
 
     @GetMapping(path = "/judge-diary", produces = MediaType.APPLICATION_JSON_VALUE)
