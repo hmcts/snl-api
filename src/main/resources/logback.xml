@@ -35,8 +35,11 @@
     <appender-ref ref="ROLLIN" />
   </root>
 
-    <logger name="uk.gov.hmcts.reform.sandl" level="INFO" />
-    <root level="INFO">
-        <appender-ref ref="STDOUT" />
-    </root>
+  <logger name="uk.gov.hmcts.reform.sandl" level="TRACE" />
+  <logger name="org.springframework.security" level="TRACE" />
+
+
+  <root level="INFO">
+      <appender-ref ref="STDOUT" />
+  </root>
 </configuration>
