@@ -17,11 +17,10 @@
   </appender>
 
   <appender name="ROLLIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>snl-events</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
       <!-- daily rollover -->
-      <fileNamePattern>snl-events.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>snl-api.%d{yyyy-MM-dd}.log</fileNamePattern>
 
     </rollingPolicy>
     <encoder>
