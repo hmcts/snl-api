@@ -43,7 +43,7 @@ public class SecurityController {
 
     @GetMapping(value = "/csrftoken", produces = MediaType.APPLICATION_JSON_VALUE)
     public String[] token(@CookieValue("XSRF-TOKEN") String token) {
-        return new String[] { token };
+        return new String[]{token};
     }
 
     @PostMapping("/signin")

@@ -66,10 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
             .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/logout/**")
-                .ignoringAntMatchers("/security/signin")
-                .and()
+                .disable()
             .cors()
         ;
         // Add our custom JWT security filter
