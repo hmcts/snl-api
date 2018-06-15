@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.sandl.snlapi.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +13,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Data
+@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
 
     private String fullName;
@@ -22,14 +24,6 @@ public class UserPrincipal implements UserDetails {
     private String password;
 
     private Collection<? extends GrantedAuthority> authorities;
-
-    public UserPrincipal(String fullName, String username, String password,
-                         Collection<? extends GrantedAuthority> authorities) {
-        this.fullName = fullName;
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
-    }
 
     public static UserPrincipal create(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
