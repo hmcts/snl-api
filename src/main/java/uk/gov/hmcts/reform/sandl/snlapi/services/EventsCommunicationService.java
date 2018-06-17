@@ -30,4 +30,12 @@ public class EventsCommunicationService {
 
         return REST_TEMPLATE.exchange(eventsUrl + endpointWithParams, HttpMethod.PUT, entity, String.class, params);
     }
+
+    public ResponseEntity<String> makePostCall(String endpointWithParams, String body, String... params) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+
+        return REST_TEMPLATE.exchange(eventsUrl + endpointWithParams, HttpMethod.POST, entity, String.class, params);
+    }
 }
