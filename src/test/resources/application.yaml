@@ -6,6 +6,8 @@ management:
     enabled: ${MANAGEMENT_SECURITY_ENABLED:true}
     allowedOrigin: ${ALLOWED_FRONTEND_ORIGIN:*}
     allowedHeaders: ${ALLOWED_HEADERS:*}
+    jwtSecret: 'AlaMaKotaAKotMaAle'
+    jwtExpirationInMs: 1800000
 
 #If you use a database then uncomment below lines and update db properties accordingly leaving tomcat connection settings unchanged.
 spring:
