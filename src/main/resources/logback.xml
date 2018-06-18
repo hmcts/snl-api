@@ -16,7 +16,7 @@
             class="com.microsoft.applicationinsights.logback.ApplicationInsightsAppender">
   </appender>
 
-  <appender name="ROLLIN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
       <!-- daily rollover -->
@@ -30,14 +30,12 @@
     </encoder>
   </appender>
 
-  <root level="trace">
+  <root level="INFO">
     <appender-ref ref="aiAppender" />
-    <appender-ref ref="ROLLIN" />
+    <appender-ref ref="rolling" />
   </root>
 
-  <logger name="uk.gov.hmcts.reform.sandl" level="TRACE" />
-  <logger name="org.springframework.security" level="TRACE" />
-
+  <logger name="uk.gov.hmcts.reform.sandl" level="INFO" />
 
   <root level="INFO">
       <appender-ref ref="STDOUT" />
