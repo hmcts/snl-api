@@ -44,6 +44,11 @@ public class SessionController {
         return eventsCommunicationService.makePutCall("/sessions", session);
     }
 
+    @RequestMapping(path = "/update", method = RequestMethod.PUT, produces = "application/json")
+    public ResponseEntity updateSession(@RequestBody String session) {
+        return eventsCommunicationService.makePutCall("/sessions/update", session);
+    }
+
     @GetMapping(path = "/judge-diary", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getJudgeDiary(
         @RequestParam("judge") String judgeUsername,
