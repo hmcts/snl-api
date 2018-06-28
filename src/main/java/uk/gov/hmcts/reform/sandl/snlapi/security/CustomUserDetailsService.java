@@ -12,24 +12,21 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("NonStaticInitializer")
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private static Map<String, User> users;
+    private final Map<String, User> users;
 
-    static {
-        users = Collections.unmodifiableMap(
-            new HashMap<String, User>() {
-                {
-                    put("officer1", new User("officer1", "asd", "Officer 1",
-                        Arrays.asList("USER", "OFFICER")));
-                    put("judge1", new User("judge1", "asd", "John Harris",
-                        Arrays.asList("USER", "JUDGE")));
-                    put("admin", new User("admin", "asd", "Administrator man",
-                        Arrays.asList("USER", "ADMIN")));
-                }
-            });
+    CustomUserDetailsService() {
+        Map<String, User> usersToAdd = new HashMap<>();
+        usersToAdd.put("officer1", new User("officer1", "asd", "Officer 1",
+            Arrays.asList("USER", "OFFICER")));
+        usersToAdd.put("judge1", new User("judge1", "asd", "John Harris",
+            Arrays.asList("USER", "JUDGE")));
+        usersToAdd.put("admin", new User("admin", "asd", "Administrator man",
+            Arrays.asList("USER", "ADMIN")));
+
+        this.users = Collections.unmodifiableMap(usersToAdd);
     }
 
     @Override
