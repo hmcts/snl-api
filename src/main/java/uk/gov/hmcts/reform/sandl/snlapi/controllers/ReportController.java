@@ -24,10 +24,15 @@ public class ReportController {
             HttpMethod.GET).getBody();
     }
 
-    @GetMapping(path = "listed-hearing-requests", params = {"startDate", "endDate"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "listed-hearing-requests",
+        params = {"startDate", "endDate"},
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getListedHearingRequests(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
-        return eventsCommunicationService.makeCall("/report/listed-hearing-requests?startDate={startDate}&endDate={endDate}",
+    public String getListedHearingRequests(
+        @RequestParam("startDate") String startDate,
+        @RequestParam("endDate") String endDate) {
+        return eventsCommunicationService.makeCall(
+            "/report/listed-hearing-requests?startDate={startDate}&endDate={endDate}",
             HttpMethod.GET, startDate, endDate).getBody();
     }
 }
