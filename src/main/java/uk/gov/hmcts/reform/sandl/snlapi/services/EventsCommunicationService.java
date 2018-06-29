@@ -4,10 +4,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.sandl.snlapi.exceptions.OptimisticLockException;
+
+import java.io.IOException;
 
 @Service
 public class EventsCommunicationService {
@@ -16,6 +22,21 @@ public class EventsCommunicationService {
 
     @Value("${communication.eventsUrl:http://localhost:8092}")
     private String eventsUrl;
+
+    EventsCommunicationService() {
+        EventsCommunicationService.REST_TEMPLATE.setErrorHandler(
+            new DefaultResponseErrorHandler() {
+                @Override
+                public void handleError(ClientHttpResponse response) throws IOException {
+                    if (response.getStatusCode() == HttpStatus.CONFLICT) {
+                        throw new OptimisticLockException();
+                    } else {
+                        super.handleError(response);
+                    }
+                }
+            }
+        );
+    }
 
     public ResponseEntity<String> makeCall(String endpointWithParams, HttpMethod httpMethod, String... params) {
         return REST_TEMPLATE.exchange(
