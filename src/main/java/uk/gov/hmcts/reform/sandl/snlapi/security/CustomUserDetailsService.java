@@ -30,15 +30,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail)
-        throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String usernameOrEmail) {
         try {
             User user = users.get(usernameOrEmail);
             return UserPrincipal.create(user);
         } catch (NullPointerException ex) {
-            new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail);
+            throw new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail, ex);
         }
-        return null;
     }
 }
 
