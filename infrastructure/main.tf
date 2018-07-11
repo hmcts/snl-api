@@ -13,6 +13,6 @@ module "snl-api" {
   common_tags          = "${var.common_tags}"
 
   app_settings = {
-   SNL_EVENTS_URL = "http://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
+   SNL_EVENTS_URL = "https://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
   }
 }
