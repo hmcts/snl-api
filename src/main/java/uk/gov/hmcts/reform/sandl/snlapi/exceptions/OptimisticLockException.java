@@ -19,5 +19,6 @@ public class OptimisticLockException extends RuntimeException {
      * spring ResponseStatus annotation
      */
     public OptimisticLockException() {
+        super();
     }
 }
