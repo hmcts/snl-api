@@ -1,8 +1,13 @@
 package uk.gov.hmcts.reform.sandl.snlapi;
 
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -93,8 +98,18 @@ public class Application {
 
         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
 
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+            .register("http", new PlainConnectionSocketFactory())
+            .register("https", csf)
+            .build();
+
+        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
+        cm.setMaxTotal(100);
+
         CloseableHttpClient httpClient = HttpClients.custom()
             .setSSLSocketFactory(csf)
+            .setConnectionManager(cm)
+            .setHostnameVerifier(SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
             .build();
 
         HttpComponentsClientHttpRequestFactory requestFactory =
