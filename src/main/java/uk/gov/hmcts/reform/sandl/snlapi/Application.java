@@ -11,13 +11,18 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import uk.gov.hmcts.reform.sandl.snlapi.exceptions.OptimisticLockException;
 
+import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -57,9 +62,29 @@ public class Application {
     }
 
     @Bean
+    public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+        RestTemplate restTemplate = createRestTemplateIgnoringSsl();
+
+        restTemplate.setErrorHandler(
+            new DefaultResponseErrorHandler() {
+                @Override
+                public void handleError(ClientHttpResponse response) throws IOException {
+                    if (response.getStatusCode() == HttpStatus.CONFLICT) {
+                        throw new OptimisticLockException();
+                    } else {
+                        super.handleError(response);
+                    }
+                }
+            }
+        );
+
+        return restTemplate;
+    }
+
     // temporary for performance teting this code should be rmeoved,
     // it allows ssl connections to untrusted urls
-    public RestTemplate restTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    private RestTemplate createRestTemplateIgnoringSsl()
+        throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
         SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
@@ -76,7 +101,6 @@ public class Application {
             new HttpComponentsClientHttpRequestFactory();
 
         requestFactory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-        return restTemplate;
+        return new RestTemplate(requestFactory);
     }
 }
