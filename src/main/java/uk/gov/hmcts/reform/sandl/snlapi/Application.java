@@ -5,6 +5,7 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -90,10 +91,9 @@ public class Application {
     // it allows ssl connections to untrusted urls
     private RestTemplate createRestTemplateIgnoringSsl()
         throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
-        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
         SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-            .loadTrustMaterial(null, acceptingTrustStrategy)
+            .loadTrustMaterial(null, new TrustSelfSignedStrategy())
             .build();
 
         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
