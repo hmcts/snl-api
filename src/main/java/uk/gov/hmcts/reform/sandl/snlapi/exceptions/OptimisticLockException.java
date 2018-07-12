@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class OptimisticLockException extends RuntimeException {
     /**
      * Typical {@code RuntimeException} constructors are omitted as this class should use
-     * spring ResponseStatus annotation
+     * spring ResponseStatus annotation.
      */
     public OptimisticLockException() {
         super();
