@@ -14,5 +14,6 @@ module "snl-api" {
 
   app_settings = {
    SNL_EVENTS_URL = "https://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
+   ALLOWED_FRONTEND_ORIGIN = "https://snl-api-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
   }
 }
