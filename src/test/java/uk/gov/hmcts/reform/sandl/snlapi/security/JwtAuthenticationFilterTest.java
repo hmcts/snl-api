@@ -14,9 +14,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import java.io.IOException;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -28,8 +28,9 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 public class JwtAuthenticationFilterTest {
     private static final String BEARER = "Bearer ";
-    private static final String TOKEN_VALUE = "eyJhbGciOiJIUzUxMiJ9" +
-        ".eyJzdWIiOiJvZmZpY2VyMSIsImlhdCI6MTUzMTQwMjI1NiwiZXhwIjoxNTMxNDA0MDU2fQ.LMPw_wMySaTgM3WgNcpI0pnvohiePTj0UMujKtZ5IPNUYtSCO5_Z7Gq7cowANfKRZw2AIiB5nPfuo8y23IirSw";
+    private static final String TOKEN_VALUE = "eyJhbGciOiJIUzUxMiJ9"
+        + ".eyJzdWIiOiJvZmZpY2VyMSIsImlhdCI6MTUzMTQwMjI1NiwiZXhwIjoxNTMxNDA0MDU2fQ"
+        + ".LMPw_wMySaTgM3WgNcpI0pnvohiePTj0UMujKtZ5IPNUYtSCO5_Z7Gq7cowANfKRZw2AIiB5nPfuo8y23IirSw";
     private static final String INVALID_TOKEN = "invalid_token";
 
     @Autowired
@@ -56,6 +57,7 @@ public class JwtAuthenticationFilterTest {
         this.request = new MockHttpServletRequest();
         this.response = new MockHttpServletResponse();
         this.chain = mock(FilterChain.class);
+        SecurityContextHolder.clearContext();
     }
 
     @Test
