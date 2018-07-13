@@ -4,8 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
@@ -42,10 +40,6 @@ public class JwtTokenProviderTest {
         String actualUsername = jtp.getUserIdFromJwt(token);
 
         assertThat(actualUsername).isEqualTo(username);
-    }
-
-    private User createUser() {
-        return new User(username, password, fullname, Collections.emptyList());
     }
 
     private Authentication createAuth() {
@@ -89,6 +83,10 @@ public class JwtTokenProviderTest {
                 return null;
             }
         };
+    }
+
+    private User createUser() {
+        return new User(username, password, fullname, Collections.emptyList());
     }
 
 }
