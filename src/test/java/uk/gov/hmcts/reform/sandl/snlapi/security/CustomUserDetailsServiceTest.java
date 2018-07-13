@@ -18,7 +18,7 @@ public class CustomUserDetailsServiceTest {
     @TestConfiguration
     static class Configuration {
         @Bean
-        public CustomUserDetailsService createSut() {
+        public CustomUserDetailsService createService() {
             return new CustomUserDetailsService();
         }
     }
