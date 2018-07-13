@@ -24,7 +24,7 @@ public class EventsCommunicationServiceTest {
     public static String EVENTS_URL = "eventsUrl";
 
     @Configuration
-    @Import(EventsCommunicationService.class) // A @Component injected with ExampleService
+    @Import(EventsCommunicationService.class)
     static class Config { }
 
     @Autowired
