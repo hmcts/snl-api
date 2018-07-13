@@ -26,18 +26,18 @@ public class EventsCommunicationService {
     }
 
     public ResponseEntity<String> makePutCall(String endpointWithParams, String body, String... params) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(body, headers);
-
-        return restTemplate.exchange(eventsUrl + endpointWithParams, HttpMethod.PUT, entity, String.class, params);
+        return makeCallWithBody(endpointWithParams, body, HttpMethod.PUT, params);
     }
 
     public ResponseEntity<String> makePostCall(String endpointWithParams, String body, String... params) {
+        return makeCallWithBody(endpointWithParams, body, HttpMethod.POST, params);
+    }
+
+    protected ResponseEntity<String> makeCallWithBody(String endpointWithParams, String body, HttpMethod method, String... params) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
-        return restTemplate.exchange(eventsUrl + endpointWithParams, HttpMethod.POST, entity, String.class, params);
+        return restTemplate.exchange(eventsUrl + endpointWithParams, method, entity, String.class, params);
     }
 }
