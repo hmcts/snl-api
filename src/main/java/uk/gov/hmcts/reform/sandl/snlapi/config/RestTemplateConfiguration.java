@@ -12,7 +12,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.exceptions.OptimisticLockException;
 import java.io.IOException;
 
 @Configuration
-public class BeanConfiguration {
+public class RestTemplateConfiguration {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
