@@ -33,7 +33,10 @@ public class EventsCommunicationService {
         return makeCallWithBody(endpointWithParams, body, HttpMethod.POST, params);
     }
 
-    protected ResponseEntity<String> makeCallWithBody(String endpointWithParams, String body, HttpMethod method, String... params) {
+    protected ResponseEntity<String> makeCallWithBody(String endpointWithParams,
+                                                      String body,
+                                                      HttpMethod method,
+                                                      String... params) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
