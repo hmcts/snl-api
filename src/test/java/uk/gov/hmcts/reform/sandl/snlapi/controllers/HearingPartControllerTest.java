@@ -25,10 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = HearingPartController.class)
-@AutoConfigureMockMvc(secure=false)
+@AutoConfigureMockMvc(secure = false)
 public class HearingPartControllerTest {
 
-    public static String HEARINGS_URL = "/hearing-part";
+    private static String HEARINGS_URL = "/hearing-part";
 
     @Configuration
     @Import(HearingPartController.class)
@@ -57,7 +57,8 @@ public class HearingPartControllerTest {
     @Test
     public void upsertHearingPart_withCorrectParametersReturnsOk() throws Exception {
         String requestBody = "A";
-        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL, requestBody)).thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL, requestBody))
+            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
 
         mockMvc.perform(put(HEARINGS_URL)
             .contentType(MediaType.APPLICATION_JSON)
@@ -65,6 +66,7 @@ public class HearingPartControllerTest {
             .andExpect(status().isOk())
             .andReturn();
     }
+
     @Test
     public void upsertHearingPart_withNoRequestBodyReturnsBadRequest() throws Exception {
         mockMvc.perform(put(HEARINGS_URL)
@@ -77,7 +79,9 @@ public class HearingPartControllerTest {
     public void assignHearingPartToSession_withCorrectParametersReturnsOk() throws Exception {
         String hearingPartId = "hearing-part-id";
         String sessionId = "session-id";
-        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL + "/{hearingPartId}", sessionId, hearingPartId)).thenReturn(new ResponseEntity<>(HttpStatus.OK));
+        when(eventsCommunicationServiceMock
+            .makePutCall(HEARINGS_URL + "/{hearingPartId}", sessionId, hearingPartId))
+            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
 
         mockMvc.perform(put(HEARINGS_URL + "/" + hearingPartId)
             .contentType(MediaType.APPLICATION_JSON)
