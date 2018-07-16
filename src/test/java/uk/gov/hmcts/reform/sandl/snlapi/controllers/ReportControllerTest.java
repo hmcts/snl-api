@@ -61,7 +61,7 @@ public class ReportControllerTest {
             + "?startDate={startDate}&endDate={endDate}", HttpMethod.GET, startDate, endDate)
             .getBody()).thenReturn(RESPONSE_BODY);
 
-        mockMvc.perform(get(REPORT_URL + listedUrl + "?startDate="+ startDate +"&endDate="+ endDate))
+        mockMvc.perform(get(REPORT_URL + listedUrl + "?startDate=" + startDate + "&endDate=" + endDate))
             .andExpect(status().isOk())
             .andExpect(content().string(RESPONSE_BODY))
             .andReturn();
