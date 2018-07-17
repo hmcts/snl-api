@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import static org.mockito.Mockito.when;
@@ -42,7 +41,9 @@ public class UserTransactionControllerTest {
     public void getUserTransaction_returnsOk() throws Exception {
         String responseBody = "A";
         String id = "1";
-        when(eventsCommunicationServiceMock.makeCall(URL + "/{id}", HttpMethod.GET, id).getBody()).thenReturn(responseBody);
+        when(eventsCommunicationServiceMock.makeCall(URL + "/{id}", HttpMethod.GET, id)
+            .getBody())
+            .thenReturn(responseBody);
 
         mockMvc.perform(get(URL + "/" + id))
             .andExpect(status().isOk())
@@ -54,7 +55,9 @@ public class UserTransactionControllerTest {
     public void commitUserTransaction_returnsOk() throws Exception {
         String responseBody = "A";
         String id = "1";
-        when(eventsCommunicationServiceMock.makePostCall(URL + "/{id}/commit", null, id).getBody()).thenReturn(responseBody);
+        when(eventsCommunicationServiceMock.makePostCall(URL + "/{id}/commit", null, id)
+            .getBody())
+            .thenReturn(responseBody);
 
         mockMvc.perform(post(URL + "/" + id + "/commit"))
             .andExpect(status().isOk())
@@ -66,7 +69,8 @@ public class UserTransactionControllerTest {
     public void rollbackUserTransaction_returnsOk() throws Exception {
         String responseBody = "A";
         String id = "1";
-        when(eventsCommunicationServiceMock.makePostCall(URL + "/{id}/rollback", null, id).getBody()).thenReturn(responseBody);
+        when(eventsCommunicationServiceMock.makePostCall(URL + "/{id}/rollback", null, id)
+            .getBody()).thenReturn(responseBody);
 
         mockMvc.perform(post(URL + "/" + id + "/rollback"))
             .andExpect(status().isOk())
