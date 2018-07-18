@@ -1,0 +1,27 @@
+{
+  "id": "bfbd8a6f-b964-a342-1ef5-2e2a48e2ee4e",
+  "name": "Postman Globals",
+  "values": [
+    {
+      "key": "username",
+      "value": "officer1",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "password",
+      "value": "asd",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2018-07-18T07:22:50.273Z",
+  "_postman_exported_using": "Postman/5.3.2"
+}
