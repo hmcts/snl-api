@@ -9,19 +9,31 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.sandl.snlapi.security.services.S2SAuthenticationService;
 
 @Service
 public class EventsCommunicationService {
 
-    @Value("${communication.eventsUrl:http://localhost:8092}")
-    private String eventsUrl;
+    private final String eventsUrl;
+    private final RestTemplate restTemplate;
+    private final S2SAuthenticationService s2SAuthenticationService;
 
     @Autowired
-    private RestTemplate restTemplate;
+    public EventsCommunicationService(
+        S2SAuthenticationService s2SAuthenticationService,
+        RestTemplate restTemplate,
+        @Value("${communication.eventsUrl:http://localhost:8092}") String eventsUrl
+    ) {
+        this.s2SAuthenticationService = s2SAuthenticationService;
+        this.restTemplate = restTemplate;
+        this.eventsUrl = eventsUrl;
+    }
 
     public ResponseEntity<String> makeCall(String endpointWithParams, HttpMethod httpMethod, String... params) {
+        HttpHeaders headers = this.s2SAuthenticationService.createAuthenticationHeader();
+        HttpEntity headersOnlyEntity = new HttpEntity(headers);
         return restTemplate.exchange(
-            eventsUrl + endpointWithParams, httpMethod, null, String.class, params
+            eventsUrl + endpointWithParams, httpMethod, headersOnlyEntity, String.class, params
         );
     }
 
@@ -37,7 +49,7 @@ public class EventsCommunicationService {
                                                       String body,
                                                       HttpMethod method,
                                                       String... params) {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = this.s2SAuthenticationService.createAuthenticationHeader();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
