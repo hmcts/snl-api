@@ -2,7 +2,7 @@ server:
   port: 8191
 
 communication:
-  eventsUrl: "http://localhost:8193"
+  eventsUrl: "http://localhost:8193" # Set EVENTS_PORT in BaseIntegrationTest to the same value as the port here
 
 management:
   security:
