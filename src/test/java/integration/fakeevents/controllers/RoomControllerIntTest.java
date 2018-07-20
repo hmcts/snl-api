@@ -1,6 +1,6 @@
-package integration.controllers;
+package integration.fakeevents.controllers;
 
-import integration.BaseIntegrationTestWithFakeEvents;
+import integration.fakeevents.BaseIntegrationTestWithFakeEvents;
 import io.restassured.http.Header;
 import org.junit.Test;
 
