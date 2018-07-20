@@ -13,18 +13,18 @@ import uk.gov.hmcts.reform.sandl.snlapi.Application;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = Application.class)
-public class BaseIntegrationTest {
+public abstract class BaseIntegrationTest {
     public static final ObjectMapper objectMapper = new ObjectMapper();
 
     @LocalServerPort
     int port;
 
     @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8192);
+    public WireMockRule wireMockRule = new WireMockRule(8193);
 
     @Before
     public void before() {
-        RestAssured.baseURI = "http://localhost:" + port;
+        RestAssured.baseURI = "http://localhost:" + String.valueOf(port);
         RestAssured.useRelaxedHTTPSValidation();
     }
 

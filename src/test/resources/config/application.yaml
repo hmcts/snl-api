@@ -1,8 +1,8 @@
 server:
-  port: 8190
+  port: 8191
 
 communication:
-  eventsUrl: "http://localhost:8192" # Go to BaseIntegrationTest and set the coresponding port for Wiremock as well
+  eventsUrl: "http://localhost:8193"
 
 management:
   security:
