@@ -2,6 +2,7 @@ package integration.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import integration.BaseIntegrationTest;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
@@ -26,25 +27,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static io.restassured.RestAssured.given;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = Application.class)
-public class RoomControllerTest {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8092);
-
-    @Before
-    public void before() {
-        String appUrl = System.getenv("TEST_URL");
-        if (appUrl == null) {
-            appUrl = "http://localhost:8090";
-        }
-
-        RestAssured.baseURI = appUrl;
-        RestAssured.useRelaxedHTTPSValidation();
-    }
+public class RoomControllerTest extends BaseIntegrationTest {
 
     @Test
     public void rooms_shouldCallProperEventsEndpointAndReturnRooms() throws Exception {
