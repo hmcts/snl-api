@@ -1,6 +1,6 @@
 package integration.controllers;
 
-import integration.BaseIntegrationTest;
+import integration.BaseIntegrationTestWithFakeEvents;
 import io.restassured.http.Header;
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static io.restassured.RestAssured.given;
 
-public class RoomControllerIntTest extends BaseIntegrationTest {
+public class RoomControllerIntTest extends BaseIntegrationTestWithFakeEvents {
 
     @Test
     public void rooms_shouldCallProperEventsEndpointAndReturnRooms() throws Exception {

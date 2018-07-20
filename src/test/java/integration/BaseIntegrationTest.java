@@ -1,13 +1,10 @@
 package integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import io.restassured.RestAssured;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,16 +20,9 @@ import static io.restassured.RestAssured.given;
 public abstract class BaseIntegrationTest {
 
     public static final ObjectMapper objectMapper = new ObjectMapper();
-    public static final int EVENTS_PORT = 8193;
 
     @LocalServerPort
     int port;
-
-    @ClassRule
-    public static WireMockClassRule wireMockRule = new WireMockClassRule(EVENTS_PORT);
-
-    @Rule
-    public WireMockClassRule instanceRule = wireMockRule;
 
     @Before
     public void before() {
