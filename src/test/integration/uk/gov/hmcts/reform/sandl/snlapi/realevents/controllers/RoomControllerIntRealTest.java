@@ -1,13 +1,11 @@
-package integration.realevents.controllers;
+package uk.gov.hmcts.reform.sandl.snlapi.realevents.controllers;
 
-import integration.BaseIntegrationTest;
 import io.restassured.http.Header;
-import org.junit.Ignore;
 import org.junit.Test;
+import uk.gov.hmcts.reform.sandl.snlapi.BaseIntegrationTest;
 
 import static io.restassured.RestAssured.given;
 
-@Ignore
 public class RoomControllerIntRealTest extends BaseIntegrationTest {
 
     @Test
@@ -17,12 +15,10 @@ public class RoomControllerIntRealTest extends BaseIntegrationTest {
         given()
             .contentType("application/json")
             .header(authenticationHeader)
-            .when()
+        .when()
             .get("/room")
-            .then()
+        .then()
             .assertThat()
-            .statusCode(200)
-            .and().extract().response();
-
+            .statusCode(200);
     }
 }
