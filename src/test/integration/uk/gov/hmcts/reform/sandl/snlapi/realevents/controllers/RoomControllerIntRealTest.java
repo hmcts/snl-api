@@ -10,7 +10,7 @@ public class RoomControllerIntRealTest extends BaseIntegrationTest {
 
     @Test
     public void rooms_shouldCallProperEventsEndpointAndReturnRooms() throws Exception {
-        Header authenticationHeader = signIn("officer1", "asd");
+        Header authenticationHeader = loginHelper.signInAsOfficer();
 
         given()
             .contentType("application/json")

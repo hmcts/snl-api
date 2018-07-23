@@ -193,7 +193,7 @@ task integrationFakeEvents(type: Test, description: 'Runs the integration tests.
   classpath = sourceSets.integrationSources.runtimeClasspath
 
   useJUnit {
-    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.fakeevents.IntegrationTestWithFakeBackend'
+    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.fakeevents.IntegrationTestWithFakeEvents'
   }
 }
 
@@ -202,7 +202,7 @@ task integrationRealEvents(type: Test, description: 'Runs the integration tests.
   classpath = sourceSets.integrationSources.runtimeClasspath
 
   useJUnit {
-    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.realevents.IntegrationTestWithRealBackend'
+    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.realevents.IntegrationTestWithRealEvents'
   }
 }
 

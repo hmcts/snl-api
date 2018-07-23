@@ -7,10 +7,10 @@ import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.sandl.snlapi.BaseIntegrationTest;
 
 @TestPropertySource(properties = {
-    "communication.eventsUrl=http://localhost:8092",
+    "communication.eventsUrl=http://localhost:8192",
 })
-@Category(IntegrationTestWithFakeBackend.class)
-@AutoConfigureWireMock(port = 8092)
+@Category(IntegrationTestWithFakeEvents.class)
+@AutoConfigureWireMock(port = 8192)
 @DirtiesContext
 public abstract class BaseIntegrationTestWithFakeEvents extends BaseIntegrationTest {
 }

@@ -2,7 +2,7 @@ server:
   port: 8191
 
 communication:
-  eventsUrl: ${SNL_EVENTS_URL:http://localhost:8092}
+  eventsUrl: ${SNL_EVENTS_URL:http://localhost:8091}
  # Set EVENTS_PORT in BaseIntegrationTest to the same value as the port here
 
 management:

@@ -22,7 +22,7 @@ public class SearchControllerIntTest extends BaseIntegrationTestWithFakeEvents {
                 .withHeader("Content-Type", "application/json")
                 .withBody("[\"results\"]")));
 
-        Header authenticationHeader = signIn("officer1", "asd");
+        Header authenticationHeader = loginHelper.signInAsOfficer();
 
         given()
             .contentType("application/json")
