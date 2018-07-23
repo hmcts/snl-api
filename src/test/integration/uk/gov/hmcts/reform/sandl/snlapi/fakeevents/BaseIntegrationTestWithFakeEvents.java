@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.sandl.snlapi.fakeevents;
 
 import org.junit.experimental.categories.Category;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.sandl.snlapi.BaseIntegrationTest;
 
@@ -10,5 +11,6 @@ import uk.gov.hmcts.reform.sandl.snlapi.BaseIntegrationTest;
 })
 @Category(IntegrationTestWithFakeBackend.class)
 @AutoConfigureWireMock(port = 8092)
+@DirtiesContext
 public abstract class BaseIntegrationTestWithFakeEvents extends BaseIntegrationTest {
 }
