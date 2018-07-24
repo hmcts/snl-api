@@ -188,23 +188,23 @@ task functional(type: Test, description: 'Runs the functional tests.', group: 'V
   classpath = sourceSets.functional.runtimeClasspath
 }
 
-task integrationFakeEvents(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+task integrationFakeEventsTests(type: Test, description: 'Integration tests with fake events.', group: 'Verification') {
   testClassesDirs = sourceSets.integrationSources.output.classesDirs
   classpath = sourceSets.integrationSources.runtimeClasspath
 
   useJUnit {
-    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.fakeevents.IntegrationTestWithFakeEvents'
+    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.testcategories.IntegrationTestWithFakeEvents'
   }
 }
 
-task integrationRealEvents(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+task integrationTests(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
   testClassesDirs = sourceSets.integrationSources.output.classesDirs
   classpath = sourceSets.integrationSources.runtimeClasspath
 
   useJUnit {
-    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.realevents.IntegrationTestWithRealEvents'
+    includeCategories 'uk.gov.hmcts.reform.sandl.snlapi.testcategories.IntegrationTest'
   }
 }
 
-test.finalizedBy integrationFakeEvents
+test.finalizedBy integrationFakeEventsTests
 

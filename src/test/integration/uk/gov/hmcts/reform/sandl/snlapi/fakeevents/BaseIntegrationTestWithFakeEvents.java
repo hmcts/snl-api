@@ -5,6 +5,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.reform.sandl.snlapi.BaseIntegrationTest;
+import uk.gov.hmcts.reform.sandl.snlapi.testcategories.IntegrationTestWithFakeEvents;
 
 @TestPropertySource(properties = {
     "communication.eventsUrl=http://localhost:8192",
