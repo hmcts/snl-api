@@ -133,8 +133,8 @@ dependencies {
 
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.6'
-  testCompile "com.github.tomakehurst:wiremock:2.18.0"
-  // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-contract-wiremock
+  testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.18.0', ext: 'pom'
+
   compile group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: '1.2.5.RELEASE'
 
 }
