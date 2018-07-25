@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sandl.snlapi.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,6 +20,7 @@ public class EventsCommunicationService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @HystrixCommand
     public ResponseEntity<String> makeCall(String endpointWithParams, HttpMethod httpMethod, String... params) {
         return restTemplate.exchange(
             eventsUrl + endpointWithParams, httpMethod, null, String.class, params
@@ -33,6 +35,7 @@ public class EventsCommunicationService {
         return makeCallWithBody(endpointWithParams, body, HttpMethod.POST, params);
     }
 
+    @HystrixCommand
     protected ResponseEntity<String> makeCallWithBody(String endpointWithParams,
                                                       String body,
                                                       HttpMethod method,
