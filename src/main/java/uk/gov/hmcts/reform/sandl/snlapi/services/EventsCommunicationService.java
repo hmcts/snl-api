@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sandl.snlapi.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -29,6 +30,7 @@ public class EventsCommunicationService {
         this.eventsUrl = eventsUrl;
     }
 
+    @HystrixCommand
     public ResponseEntity<String> makeCall(String endpointWithParams, HttpMethod httpMethod, String... params) {
         HttpHeaders headers = this.s2SAuthenticationService.createAuthenticationHeader();
         HttpEntity headersOnlyEntity = new HttpEntity(headers);
@@ -45,6 +47,7 @@ public class EventsCommunicationService {
         return makeCallWithBody(endpointWithParams, body, HttpMethod.POST, params);
     }
 
+    @HystrixCommand
     protected ResponseEntity<String> makeCallWithBody(String endpointWithParams,
                                                       String body,
                                                       HttpMethod method,

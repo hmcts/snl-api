@@ -1,5 +1,9 @@
 server:
-  port: 8090
+  port: 8190
+
+communication:
+  eventsUrl: ${SNL_EVENTS_URL:http://localhost:8092}
+ # Set EVENTS_PORT in BaseIntegrationTest to the same value as the port here
 
 management:
   security:
