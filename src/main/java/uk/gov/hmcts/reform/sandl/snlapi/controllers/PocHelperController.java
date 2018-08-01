@@ -20,7 +20,7 @@ public class PocHelperController {
     @PostMapping(path = "/loaddb",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> loadDb() {
+    public ResponseEntity loadDb() {
         eventsCommunicationService.makeCall("/poc", HttpMethod.POST);
 
         return new ResponseEntity<>(HttpStatus.OK.toString(), HttpStatus.OK);
