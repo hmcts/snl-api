@@ -11,6 +11,9 @@ management:
     allowedHeaders: ${ALLOWED_HEADERS:*}
     jwtSecret: 'AlaMaKotaAKotMaAle'
     jwtExpirationInMs: 1800000
+    events:
+      jwtSecret: "sialaBabaMak"
+      jwtExpirationInMs: 5000
 
 azure:
   application-insights:

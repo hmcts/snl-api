@@ -17,7 +17,7 @@ public class RestTemplateConfiguration {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.errorHandler(
-            new DefaultResponseErrorHandler() {
+            new DefaultResponseErrorHandler() { //Handler should be excluded to a separate class to easier testing
                 @Override
                 public void handleError(ClientHttpResponse response) throws IOException {
                     if (response.getStatusCode() == HttpStatus.CONFLICT) {

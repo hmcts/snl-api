@@ -12,6 +12,9 @@ management:
     allowedHeaders: ${ALLOWED_HEADERS:*}
     jwtSecret: 'AlaMaKotaAKotMaAle'
     jwtExpirationInMs: 1800000
+    events:
+      jwtSecret: "sialaBabaMak"
+      jwtExpirationInMs: 5000
 
 #If you use a database then uncomment below lines and update db properties accordingly leaving tomcat connection settings unchanged.
 spring:
