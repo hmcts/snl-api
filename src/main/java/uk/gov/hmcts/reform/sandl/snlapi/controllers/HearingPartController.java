@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/hearing-part")
@@ -22,8 +25,9 @@ public class HearingPartController {
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getHearingParts() {
-        return eventsCommunicationService.makeCall("/hearing-part", HttpMethod.GET).getBody();
+    public String getHearingParts(@RequestParam("isListed") Optional<Boolean> isListed) {
+        String url = "/hearing-part" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
+        return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
