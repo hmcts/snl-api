@@ -29,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class HearingPartControllerTest {
 
     private static String HEARINGS_URL = "/hearing-part";
+    private static String HEARINGS_WITH_IS_LISTED_PARAM_URL = "/hearing-part?isListed=false";
+    private static String HEARINGS_WITH_WRONG_LISTED_PARAM_URL = "/hearing-part?isListed=";
+    private static String RESPONSE_BODY = "A";
 
     @Configuration
     @Import(HearingPartController.class)
@@ -45,24 +48,48 @@ public class HearingPartControllerTest {
 
     @Test
     public void getHearingParts_returnsOk() throws Exception {
-        String responseBody = "A";
-        when(eventsCommunicationServiceMock.makeCall(HEARINGS_URL, HttpMethod.GET).getBody()).thenReturn(responseBody);
+        when(eventsCommunicationServiceMock.makeCall(HEARINGS_URL, HttpMethod.GET).getBody()).thenReturn(RESPONSE_BODY);
 
         mockMvc.perform(get(HEARINGS_URL))
             .andExpect(status().isOk())
-            .andExpect(content().string(responseBody))
+            .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void getHearingPartsWithListedParam_returnsOk() throws Exception {
+        when(eventsCommunicationServiceMock
+            .makeCall(HEARINGS_WITH_IS_LISTED_PARAM_URL, HttpMethod.GET)
+            .getBody()
+        ).thenReturn(RESPONSE_BODY);
+
+        mockMvc.perform(get(HEARINGS_WITH_IS_LISTED_PARAM_URL))
+            .andExpect(status().isOk())
+            .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void getHearingPartsWithWrongListedParam_passRequestWithoutParam() throws Exception {
+        when(eventsCommunicationServiceMock
+            .makeCall(HEARINGS_URL, HttpMethod.GET)
+            .getBody()
+        ).thenReturn(RESPONSE_BODY);
+
+        mockMvc.perform(get(HEARINGS_WITH_WRONG_LISTED_PARAM_URL))
+            .andExpect(status().isOk())
+            .andExpect(content().string(RESPONSE_BODY))
             .andReturn();
     }
 
     @Test
     public void upsertHearingPart_withCorrectParametersReturnsOk() throws Exception {
-        String requestBody = "A";
-        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL, requestBody))
+        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL, RESPONSE_BODY))
             .thenReturn(new ResponseEntity<>(HttpStatus.OK));
 
         mockMvc.perform(put(HEARINGS_URL)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(requestBody))
+            .content(RESPONSE_BODY))
             .andExpect(status().isOk())
             .andReturn();
     }
