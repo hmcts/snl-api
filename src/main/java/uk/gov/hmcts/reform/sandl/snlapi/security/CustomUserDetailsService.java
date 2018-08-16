@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     CustomUserDetailsService() {
         Map<String, User> usersToAdd = new HashMap<>();
-        for (int i = 1; i <= 1000; i++) {
+        for (int i = 1; i <= 10000; i++) {
             usersToAdd.put("officer" + i, new User("officer" + i, "asd", "Officer " + i,
                 Arrays.asList("USER", "OFFICER")));
         }
