@@ -17,7 +17,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.security.services.S2SAuthenticationServi
 @RestController
 @RequestMapping("/poc")
 /*
-This controller is only a temporary solution that allows loading data fro db into rules engine.
+This controller is only a temporary solution that allows loading data from db into rules engine.
 One the final solution is in place of restoring state of drools then this controller together
 with the ui should be removed.
  */
