@@ -43,5 +43,9 @@ public class HearingPartController {
         return eventsCommunicationService.makePutCall("/hearing-part/{hearingPartId}",
             assignment, hearingPartId);
     }
-}
 
+    @PutMapping(path = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createHearingPartAction(@RequestBody String createHearingPart) {
+        return eventsCommunicationService.makePutCall("/hearing-part/create", createHearingPart);
+    }
+}
