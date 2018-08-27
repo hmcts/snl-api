@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/hearing-part")
@@ -28,6 +29,11 @@ public class HearingPartController {
     public String getHearingParts(@RequestParam("isListed") Optional<Boolean> isListed) {
         String url = "/hearing-part" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
+    }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getHearingPartById(@PathVariable("id") String id) {
+        return eventsCommunicationService.makeCall("/hearing-part/{id}", HttpMethod.GET, id).getBody();
     }
 
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -47,5 +53,10 @@ public class HearingPartController {
     @PutMapping(path = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createHearingPartAction(@RequestBody String createHearingPart) {
         return eventsCommunicationService.makePutCall("/hearing-part/create", createHearingPart);
+    }
+
+    @PutMapping(path = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateHearingPartAction(@RequestBody String updateHearingPart) {
+        return eventsCommunicationService.makePutCall("/hearing-part/update", updateHearingPart);
     }
 }
