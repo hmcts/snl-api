@@ -47,6 +47,10 @@ public class EventsCommunicationService {
         return makeCallWithBody(endpointWithParams, body, HttpMethod.POST, params);
     }
 
+    public ResponseEntity<String> makeDeleteCall(String endpointWithParams, String... params) {
+        return makeCall(endpointWithParams, HttpMethod.DELETE, params);
+    }
+
     @HystrixCommand
     protected ResponseEntity<String> makeCallWithBody(String endpointWithParams,
                                                       String body,
