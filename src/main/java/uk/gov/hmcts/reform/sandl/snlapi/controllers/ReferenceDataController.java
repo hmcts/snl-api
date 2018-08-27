@@ -16,33 +16,33 @@ public class ReferenceDataController {
     @Autowired
     private EventsCommunicationService eventsCommunicationService;
 
-    @GetMapping(path = "/caseType/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/case-types", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getCaseTypes() {
-        String url = "/reference/caseType/all";
+        String url = "/reference/case-types";
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 
-    @GetMapping(path = "/sessionType/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/session-types", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getSessionTypes() {
-        String url = "/reference/sessionType/all";
+        String url = "/reference/session-types";
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 
 
-    @GetMapping(path = "/hearingType/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/hearing-types", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getHearingTypes() {
-        String url = "/reference/hearingType/all";
+        String url = "/reference/hearing-types";
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 
 
-    @GetMapping(path = "/roomType/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/room-types", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String getRoomTypes() {
-        String url = "/reference/roomType/all";
+        String url = "/reference/room-types";
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 
