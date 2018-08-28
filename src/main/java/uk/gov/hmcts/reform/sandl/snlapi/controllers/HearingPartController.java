@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/hearing-part")
@@ -48,6 +48,12 @@ public class HearingPartController {
                                             @RequestBody String assignment) {
         return eventsCommunicationService.makePutCall("/hearing-part/{hearingPartId}",
             assignment, hearingPartId);
+    }
+
+    @PostMapping(path = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity deleteHearingPart(@RequestBody String deleteHearingPart) {
+        return eventsCommunicationService.makePostCall("/hearing-part/delete", deleteHearingPart);
     }
 
     @PutMapping(path = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
