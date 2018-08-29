@@ -1,0 +1,33 @@
+{
+  "id": "be318b24-72a8-43bf-dc42-d4592aaea92b",
+  "name": "Postman Globals",
+  "values": [
+    {
+      "key": "username",
+      "value": "officer1",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "password",
+      "value": "asd",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "accessToken",
+      "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvZmZpY2VyMSIsImlhdCI6MTUzNTM0ODAwNCwiZXhwIjoxNTM1MzQ5ODA0fQ.N2oByYeNzlemuQzk7aMD1QShXgHoO081VHfLAY8pZ-ChKDmgSexwWB-37ArDHbSa7AHJdQj60Hd3KLOyigyEQA",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "recentTransactionId",
+      "value": "ef795d2b-6216-45b7-80e5-793657821d82",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "globals",
+  "_postman_exported_at": "2018-08-29T07:27:21.209Z",
+  "_postman_exported_using": "Postman/5.3.2"
+}
