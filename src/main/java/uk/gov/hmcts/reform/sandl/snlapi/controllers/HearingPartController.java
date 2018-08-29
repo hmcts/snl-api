@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/hearing-part")
