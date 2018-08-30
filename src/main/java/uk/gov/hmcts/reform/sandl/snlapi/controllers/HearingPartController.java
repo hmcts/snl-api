@@ -31,6 +31,11 @@ public class HearingPartController {
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getHearingPartById(@PathVariable("id") String id) {
+        return eventsCommunicationService.makeCall("/hearing-part/{id}", HttpMethod.GET, id).getBody();
+    }
+
     @PutMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity upsertHearingPart(@RequestBody String hearingPart) {
@@ -50,5 +55,14 @@ public class HearingPartController {
     public ResponseEntity deleteHearingPart(@PathVariable String hearingPartId) {
         return eventsCommunicationService.makeDeleteCall("/hearing-part/{hearingPartId}", hearingPartId);
     }
-}
 
+    @PutMapping(path = "create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createHearingPartAction(@RequestBody String createHearingPart) {
+        return eventsCommunicationService.makePutCall("/hearing-part/create", createHearingPart);
+    }
+
+    @PutMapping(path = "update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateHearingPartAction(@RequestBody String updateHearingPart) {
+        return eventsCommunicationService.makePutCall("/hearing-part/update", updateHearingPart);
+    }
+}
