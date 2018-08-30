@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
+import lombok.val;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Answers;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -162,6 +164,22 @@ public class HearingPartControllerTest {
         mockMvc.perform(put(HEARINGS_URL + "/" + hearingPartId)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
+            .andReturn();
+    }
+
+    @Test
+    public void deleteHearingPart_returnsWhatEventsReturn() throws Exception {
+        val result = "r";
+        val url = HEARINGS_URL +  "/delete";
+        val id = "id";
+
+        when(eventsCommunicationServiceMock
+            .makePostCall(url, "id"))
+            .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
+
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("id"))
+            .andExpect(content().string(result))
+            .andExpect(status().isOk())
             .andReturn();
     }
 }
