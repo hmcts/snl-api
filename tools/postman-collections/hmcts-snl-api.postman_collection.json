@@ -245,6 +245,58 @@
 					"response": []
 				},
 				{
+					"name": "Delete hearing part",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"recentTransactionId\", pm.response.json().id);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"hearingPartId\":\"f1cd24d9-1844-4318-b462-31cd48295c43\",\"hearingPartVersion\":0}"
+						},
+						"url": {
+							"raw": "http://localhost:8090/hearing-part/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"hearing-part",
+								"delete"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "Get by Id",
 					"request": {
 						"auth": {

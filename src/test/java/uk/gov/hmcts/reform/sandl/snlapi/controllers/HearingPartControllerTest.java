@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -72,6 +72,19 @@ public class HearingPartControllerTest {
     }
 
     @Test
+    public void getHearingPartById_returnsOk() throws Exception {
+        when(eventsCommunicationServiceMock
+            .makeCall(HEARINGS_URL + "/{id}", HttpMethod.GET, "1")
+            .getBody()
+        ).thenReturn(RESPONSE_BODY);
+
+        mockMvc.perform(get(HEARINGS_URL + "/1"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
     public void getHearingPartsWithWrongListedParam_passRequestWithoutParam() throws Exception {
         when(eventsCommunicationServiceMock
             .makeCall(HEARINGS_URL, HttpMethod.GET)
@@ -81,6 +94,30 @@ public class HearingPartControllerTest {
         mockMvc.perform(get(HEARINGS_WITH_WRONG_LISTED_PARAM_URL))
             .andExpect(status().isOk())
             .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void createHearingPartAction_withCorrectParametersReturnsOk() throws Exception {
+        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL + "/create", RESPONSE_BODY))
+            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+
+        mockMvc.perform(put(HEARINGS_URL + "/create")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(RESPONSE_BODY))
+            .andExpect(status().isOk())
+            .andReturn();
+    }
+
+    @Test
+    public void updateHearingPartAction_withCorrectParametersReturnsOk() throws Exception {
+        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL + "/update", RESPONSE_BODY))
+            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+
+        mockMvc.perform(put(HEARINGS_URL + "/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(RESPONSE_BODY))
+            .andExpect(status().isOk())
             .andReturn();
     }
 
@@ -95,6 +132,7 @@ public class HearingPartControllerTest {
             .andExpect(status().isOk())
             .andReturn();
     }
+
 
     @Test
     public void upsertHearingPart_withNoRequestBodyReturnsBadRequest() throws Exception {
@@ -132,14 +170,14 @@ public class HearingPartControllerTest {
     @Test
     public void deleteHearingPart_returnsWhatEventsReturn() throws Exception {
         val result = "r";
-        val url = HEARINGS_URL +  "/{hearingPartId}";
+        val url = HEARINGS_URL +  "/delete";
         val id = "id";
 
         when(eventsCommunicationServiceMock
-            .makeDeleteCall(url, "id"))
+            .makePostCall(url, "id"))
             .thenReturn(new ResponseEntity<>(result, HttpStatus.OK));
 
-        mockMvc.perform(delete(url, id))
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content("id"))
             .andExpect(content().string(result))
             .andExpect(status().isOk())
             .andReturn();
