@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.security.JwtAuthenticationFilter;
     prePostEnabled = true
 )
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@SuppressWarnings("squid:S3878")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
