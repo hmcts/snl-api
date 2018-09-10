@@ -1,6 +1,7 @@
 package uk.gov.hmcts.reform.sandl.snlapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import uk.gov.hmcts.reform.sandl.snlapi.security.JwtAuthenticationEntryPoint;
@@ -26,6 +28,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.security.JwtAuthenticationFilter;
     prePostEnabled = true
 )
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
+@SuppressWarnings("squid:S3878")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -38,9 +41,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter();
     }
 
+    @Bean
+    /*
+     * This is needed to pass through the security context to new threads created from main thread,
+     * for example for get requests.
+     * Otherwise it will not have the authentication object and no information about the user
+     */
+    public MethodInvokingFactoryBean methodInvokingFactoryBean() {
+        MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
+        methodInvokingFactoryBean.setTargetClass(SecurityContextHolder.class);
+        methodInvokingFactoryBean.setTargetMethod("setStrategyName");
+        methodInvokingFactoryBean.setArguments(new Object[]{SecurityContextHolder.MODE_INHERITABLETHREADLOCAL});
+        return methodInvokingFactoryBean;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http
             .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
@@ -70,7 +86,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
         // Add our custom JWT security filter
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
 
     @Override

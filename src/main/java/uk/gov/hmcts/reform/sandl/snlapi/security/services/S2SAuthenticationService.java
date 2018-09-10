@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+
 @Slf4j
 @Service
 public class S2SAuthenticationService {
@@ -23,7 +25,6 @@ public class S2SAuthenticationService {
         @Value("${management.security.events.jwtExpirationInMs}") long jwtExpirationInMs
     ) {
         this.tokenCreator = new TokenCreator(jwtSecret, jwtExpirationInMs, "snl-api");
-
     }
 
     public HttpHeaders createAuthenticationHeader() {
@@ -47,12 +48,24 @@ public class S2SAuthenticationService {
             Date now = new Date();
             Date expiryDate = new Date(now.getTime() + expiration);
 
+            String userName = findCurrentUser();
+
             return Jwts.builder()
                 .claim("service", serviceName)
+                .claim("user", userName)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+        }
+
+        private String findCurrentUser() {
+            if (getContext() != null && getContext().getAuthentication() != null
+                && getContext().getAuthentication().isAuthenticated()) {
+                return getContext().getAuthentication().getName();
+            } else {
+                return "anonymous";
+            }
         }
     }
 }
