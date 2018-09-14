@@ -50,7 +50,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void addRefreshTokenToResponse(HttpServletResponse response, String jwt, UsernamePasswordAuthenticationToken authentication) {
+    private void addRefreshTokenToResponse(
+        HttpServletResponse response, String jwt, UsernamePasswordAuthenticationToken authentication
+    ) {
         Date newDate = null;
         try {
             newDate = tokenProvider.getMaxExpiryDateFromJwt(jwt);
@@ -73,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private String createJwtForResponse(String pureJWT) {
-        return String.format("%s %s", HEADER_CONTENT_PREFIX, pureJWT);
+    private String createJwtForResponse(String pureJwt) {
+        return String.format("%s %s", HEADER_CONTENT_PREFIX, pureJwt);
     }
 }

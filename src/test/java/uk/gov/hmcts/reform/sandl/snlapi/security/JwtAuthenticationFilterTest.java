@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.util.Date;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 
@@ -47,14 +46,6 @@ public class JwtAuthenticationFilterTest {
     private JwtTokenProvider tokenProvider;
     @SpyBean
     private CustomUserDetailsService userDetailsService;
-
-    @TestConfiguration
-    static class JwtAuthenticationFilterTestContextConfiguration {
-        @Bean
-        public JwtAuthenticationFilter jwtAuthenticationFilter() {
-            return new JwtAuthenticationFilter();
-        }
-    }
 
     @Before
     public void setup() {
@@ -117,6 +108,14 @@ public class JwtAuthenticationFilterTest {
         String newToken = response.getHeader("${management.security.newTokenHeaderName}");
         assertNotNull(newToken);
         assertNotEquals(newToken, TOKEN_VALUE);
+    }
+
+    @TestConfiguration
+    static class JwtAuthenticationFilterTestContextConfiguration {
+        @Bean
+        public JwtAuthenticationFilter jwtAuthenticationFilter() {
+            return new JwtAuthenticationFilter();
+        }
     }
 
 }
