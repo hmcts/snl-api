@@ -58,7 +58,7 @@ public class SecurityController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = tokenProvider.generateToken(authentication);
+        String jwt = tokenProvider.generateToken(authentication, tokenProvider.generateNewMaxExpiryDate());
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 

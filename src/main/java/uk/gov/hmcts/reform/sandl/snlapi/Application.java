@@ -26,13 +26,15 @@ public class Application {
     @Bean
     public CorsFilter corsFilter(
         @Value("${management.security.allowedOrigin}") String allowedOrigins,
-        @Value("${management.security.allowedHeaders}") String allowedHeaders
+        @Value("${management.security.allowedHeaders}") String allowedHeaders,
+        @Value("${management.security.exposeHeaders}") String exposeHeaders
     ) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // you USUALLY want this
         // likely you should limit this to specific origins
         config.addAllowedOrigin(allowedOrigins);
         config.addAllowedHeader(allowedHeaders);
+        config.addExposedHeader(exposeHeaders);
         config.addAllowedMethod(HttpMethod.GET);
         config.addAllowedMethod(HttpMethod.POST);
         config.addAllowedMethod(HttpMethod.PUT);

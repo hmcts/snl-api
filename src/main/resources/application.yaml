@@ -9,8 +9,11 @@ management:
     enabled: ${MANAGEMENT_SECURITY_ENABLED:true}
     allowedOrigin: ${ALLOWED_FRONTEND_ORIGIN:*}
     allowedHeaders: ${ALLOWED_HEADERS:*}
+    exposeHeaders: ${EXPOSE_HEADERS:Refreshed-Token}
     jwtSecret: 'AlaMaKotaAKotMaAle'
     jwtExpirationInMs: 1800000
+    jwtMaxExpirationInMs: 28800000
+    newTokenHeaderName: 'Refreshed-Token'
     events:
       jwtSecret: "sialaBabaMak"
       jwtExpirationInMs: 5000

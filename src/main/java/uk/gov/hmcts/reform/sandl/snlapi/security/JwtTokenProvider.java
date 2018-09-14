@@ -14,11 +14,14 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.UserPrincipal;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+    public static final String MAX_EXPIRY_DATE = "maxExpiryDate";
 
     @Value("${management.security.jwtSecret}")
     private String jwtSecret;
@@ -26,18 +29,23 @@ public class JwtTokenProvider {
     @Value("${management.security.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 
-    public String generateToken(Authentication authentication) {
+    @Value("${management.security.jwtMaxExpirationInMs}")
+    private int jwtMaxExpirationInMs;
 
+    public String generateToken(Authentication authentication, Date maxExpiryDate) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(MAX_EXPIRY_DATE, maxExpiryDate);
 
         return
             Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
+                .addClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
@@ -49,6 +57,19 @@ public class JwtTokenProvider {
             .getBody();
 
         return claims.getSubject();
+    }
+
+    public Date getMaxExpiryDateFromJwt(String token) {
+        Claims claims = Jwts.parser()
+            .setSigningKey(jwtSecret)
+            .parseClaimsJws(token)
+            .getBody();
+
+        return new Date((Long) claims.get(MAX_EXPIRY_DATE));
+    }
+
+    public Date generateNewMaxExpiryDate() {
+        return new Date(new Date().getTime() + jwtMaxExpirationInMs);
     }
 
     public boolean validateToken(String authToken) {
