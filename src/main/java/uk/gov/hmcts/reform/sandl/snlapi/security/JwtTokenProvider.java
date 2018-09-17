@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.sandl.snlapi.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -74,7 +75,11 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            final Jws<Claims> claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            final Date maxExpiryDate = claims.getBody().get(MAX_EXPIRY_DATE, Date.class);
+            if (new Date().compareTo(maxExpiryDate) > 0) {
+                return false;
+            }
             return true;
         } catch (MalformedJwtException ex) {
             logger.error("Invalid JWT token", ex);

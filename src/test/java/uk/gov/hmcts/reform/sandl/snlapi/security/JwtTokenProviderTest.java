@@ -67,6 +67,30 @@ public class JwtTokenProviderTest {
         Date maxExpiryDate = jtp.getMaxExpiryDateFromJwt(token);
     }
 
+    @Test
+    public void validateToken_withMaxExpiryDateInPast_shouldReturnFalse() {
+        Authentication auth = createAuth();
+        Date dateInPast = new Date(new Date().getTime() - MAX_EXPIRY_MS - 1);
+
+        String token = jtp.generateToken(auth, dateInPast);
+
+        boolean isTokenValid = jtp.validateToken(token);
+
+        assertThat(isTokenValid).isFalse();
+    }
+
+    @Test
+    public void validateToken_withMaxExpiryDateInFuture_shouldReturnFalse() {
+        Authentication auth = createAuth();
+        Date dateInFuture = new Date(new Date().getTime() + MAX_EXPIRY_MS);
+
+        String token = jtp.generateToken(auth, dateInFuture);
+
+        boolean isTokenValid = jtp.validateToken(token);
+
+        assertThat(isTokenValid).isTrue();
+    }
+
     private Authentication createAuth() {
         return createAuth(createUser());
     }
