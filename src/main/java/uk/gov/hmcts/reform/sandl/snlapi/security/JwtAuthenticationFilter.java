@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
 import java.io.IOException;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static uk.gov.hmcts.reform.sandl.snlapi.security.services.S2SAuthenticationService.HEADER_CONTENT_PREFIX;
+import static uk.gov.hmcts.reform.sandl.snlapi.security.services.S2SAuthenticationService.HEADER_NAME;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -32,16 +34,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
+            IUserToken userToken = tokenProvider.parseToken(jwt);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                String userId = tokenProvider.getUserIdFromJwt(jwt);
+            if (userToken.isValid()) {
+                String userId = userToken.getUserId();
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                addRefreshTokenToResponse(response, jwt, authentication);
+
+                addRefreshTokenToResponse(response, userToken.getMaxExpiryDate());
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
@@ -50,32 +54,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void addRefreshTokenToResponse(
-        HttpServletResponse response, String jwt, UsernamePasswordAuthenticationToken authentication
-    ) {
-        Date newDate = null;
-        try {
-            newDate = tokenProvider.getMaxExpiryDateFromJwt(jwt);
-        } catch (RuntimeException rex) {
-            logger.error("Could not find maxEpiryDate in jwt Token", rex);
-        }
+    private void addRefreshTokenToResponse(HttpServletResponse response, Date maxExpiryDate) {
         response.addHeader(newTokenHeaderName, createJwtForResponse(
-            tokenProvider.generateToken(
-                authentication,
-                newDate
-            )
+            tokenProvider.generateToken(maxExpiryDate)
         ));
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+        String bearerToken = request.getHeader(HEADER_NAME);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(HEADER_CONTENT_PREFIX)) {
+            return bearerToken.substring(HEADER_CONTENT_PREFIX.length(), bearerToken.length());
         }
         return null;
     }
 
     private String createJwtForResponse(String pureJwt) {
-        return String.format("%s %s", HEADER_CONTENT_PREFIX, pureJwt);
+        return String.format("%s%s", HEADER_CONTENT_PREFIX, pureJwt);
     }
 }

@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.sandl.snlapi.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,10 +15,12 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
-import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.Date;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,8 +61,7 @@ public class JwtAuthenticationFilterTest {
 
     @Test
     public void doFilterInternal_withValidTokenAsProperUser_shouldAuthenticate() throws ServletException, IOException {
-        when(tokenProvider.validateToken(TOKEN_VALUE)).thenReturn(true);
-        when(tokenProvider.getUserIdFromJwt(TOKEN_VALUE)).thenReturn("officer1");
+        when(tokenProvider.parseToken(TOKEN_VALUE)).thenReturn(createSampleUser());
 
         request.addHeader("Authorization", BEARER + TOKEN_VALUE);
 
@@ -71,7 +74,7 @@ public class JwtAuthenticationFilterTest {
 
     @Test
     public void doFilterInternal_withInvalidToken_shouldNotAuthenticate() throws ServletException, IOException {
-        when(tokenProvider.validateToken(INVALID_TOKEN)).thenReturn(false);
+        when(tokenProvider.parseToken(INVALID_TOKEN)).thenReturn(createInvalidUser());
 
         request.addHeader("Authorization", BEARER + INVALID_TOKEN);
 
@@ -84,8 +87,27 @@ public class JwtAuthenticationFilterTest {
 
     @Test
     public void doFilterInternal_validTokenButNotUser_shouldNotAuthenticate() throws ServletException, IOException {
-        when(tokenProvider.validateToken(TOKEN_VALUE)).thenReturn(true);
-        when(tokenProvider.getUserIdFromJwt(TOKEN_VALUE)).thenReturn("definitely not a user");
+        when(tokenProvider.parseToken(TOKEN_VALUE)).thenReturn(new IUserToken() {
+            @Override
+            public Date getMaxExpiryDate() {
+                return null;
+            }
+
+            @Override
+            public String getUserId() {
+                return "definitely not a user";
+            }
+
+            @Override
+            public Jws<Claims> getClaims() {
+                return null;
+            }
+
+            @Override
+            public boolean isValid() {
+                return true;
+            }
+        });
 
         request.addHeader("Authorization", BEARER + TOKEN_VALUE);
 
@@ -98,9 +120,8 @@ public class JwtAuthenticationFilterTest {
 
     @Test
     public void doFilterInternal_withValidToken_shouldResponseWithNewToken() throws ServletException, IOException {
-        when(tokenProvider.validateToken(TOKEN_VALUE)).thenReturn(true);
-        when(tokenProvider.getUserIdFromJwt(TOKEN_VALUE)).thenReturn("officer1");
-        when(tokenProvider.generateToken(any(), any())).thenReturn("dummy data simulating jwt");
+        when(tokenProvider.parseToken(TOKEN_VALUE)).thenReturn(createSampleUser());
+        when(tokenProvider.generateToken(any())).thenReturn("dummy data simulating jwt");
 
         request.addHeader("Authorization", BEARER + TOKEN_VALUE);
 
@@ -108,6 +129,54 @@ public class JwtAuthenticationFilterTest {
         String newToken = response.getHeader("${management.security.newTokenHeaderName}");
         assertNotNull(newToken);
         assertNotEquals(newToken, TOKEN_VALUE);
+    }
+
+    private IUserToken createSampleUser() {
+        return new IUserToken() {
+            @Override
+            public Date getMaxExpiryDate() {
+                return new Date(new Date().getTime() + 10000);
+            }
+
+            @Override
+            public String getUserId() {
+                return "officer1";
+            }
+
+            @Override
+            public Jws<Claims> getClaims() {
+                return null;
+            }
+
+            @Override
+            public boolean isValid() {
+                return true;
+            }
+        };
+    }
+
+    private IUserToken createInvalidUser() {
+        return new IUserToken() {
+            @Override
+            public Date getMaxExpiryDate() {
+                return new Date(new Date().getTime() - 10000);
+            }
+
+            @Override
+            public String getUserId() {
+                return null;
+            }
+
+            @Override
+            public Jws<Claims> getClaims() {
+                return null;
+            }
+
+            @Override
+            public boolean isValid() {
+                return false;
+            }
+        };
     }
 
     @TestConfiguration

@@ -37,7 +37,7 @@ public class S2SAuthenticationServiceTest {
 
     @Test
     public void tokenCreator_createToken_forRules_containsProperFields() {
-        final String token = s2SAuthenticationService.new TokenCreator(
+        final String token = s2SAuthenticationService.new S2StokenCreator(
             SECRET_EVENTS, DEFAULT_EXPIRY, SERVICE_NAME_SNL_API)
             .createToken();
 
