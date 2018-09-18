@@ -17,10 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.util.Date;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;

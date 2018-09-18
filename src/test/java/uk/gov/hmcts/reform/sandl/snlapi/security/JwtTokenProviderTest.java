@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.UserPrincipal;
 
@@ -87,11 +86,10 @@ public class JwtTokenProviderTest {
     @Test
     public void validateToken_withoutMaxExpiryDate_shouldReturnFalse() {
         String token = jtp.generateToken(null);
-        boolean isTokenValid =jtp.parseToken(token).isValid();
+        boolean isTokenValid = jtp.parseToken(token).isValid();
 
         assertThat(isTokenValid).isFalse();
     }
-
 
     private Authentication createAuth() {
         return createAuth(createUser());
