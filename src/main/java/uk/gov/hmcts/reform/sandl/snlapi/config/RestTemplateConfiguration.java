@@ -24,7 +24,7 @@ public class RestTemplateConfiguration {
                 public void handleError(ClientHttpResponse response) throws IOException {
                     if (response.getStatusCode() == HttpStatus.CONFLICT) {
                         throw new OptimisticLockException();
-                    } else if (response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
+                    } else if (response.getStatusCode() == HttpStatus.BAD_REQUEST) {
                         Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
                         String result = s.hasNext() ? s.next() : "";
                         throw new BeanValidationException(result);
