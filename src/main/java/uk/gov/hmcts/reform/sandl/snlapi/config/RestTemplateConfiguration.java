@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
+import uk.gov.hmcts.reform.sandl.snlapi.exceptions.BeanValidationException;
 import uk.gov.hmcts.reform.sandl.snlapi.exceptions.OptimisticLockException;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 @Configuration
 public class RestTemplateConfiguration {
@@ -22,6 +24,10 @@ public class RestTemplateConfiguration {
                 public void handleError(ClientHttpResponse response) throws IOException {
                     if (response.getStatusCode() == HttpStatus.CONFLICT) {
                         throw new OptimisticLockException();
+                    } else if (response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
+                        Scanner s = new Scanner(response.getBody()).useDelimiter("\\A");
+                        String result = s.hasNext() ? s.next() : "";
+                        throw new BeanValidationException(result);
                     } else {
                         super.handleError(response);
                     }
