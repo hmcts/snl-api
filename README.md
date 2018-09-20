@@ -203,7 +203,7 @@ Here are some other functionalities it provides:
  * [Request caching](https://github.com/Netflix/Hystrix/wiki/How-it-Works#request-caching), allowing
  different code paths to execute Hystrix Commands without worrying about duplicating work
  
-### Postman Collections
+## Postman Collections
 
 The ./tools/postman-collections contains a set of files to load into postman: collections, globals, environments.
 
@@ -211,7 +211,7 @@ The ./tools/postman-collections contains a set of files to load into postman: co
 The hostname and port are parametrized and taken from postman's environment variables. At this point there are two envs: 'Local' and 'AAT-master'
 (You need a properly configured proxy to execute call from Postman to Azure environments like AAT)
 
-#### Sign In
+### Sign In
 1. Set username and password in globals
 2. Execute sign-in request
 3. The access token is saved in globals and appended later on to every request
