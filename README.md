@@ -202,6 +202,29 @@ Here are some other functionalities it provides:
  the number of concurrent calls to any given dependency
  * [Request caching](https://github.com/Netflix/Hystrix/wiki/How-it-Works#request-caching), allowing
  different code paths to execute Hystrix Commands without worrying about duplicating work
+ 
+### Postman Collections
+
+The ./tools/postman-collections contains a set of files to load into postman: collections, globals, environments.
+
+### Envs
+The hostname and port are parametrized and taken from postman's environment variables. At this point there are two envs: 'Local' and 'AAT-master'
+(You need a properly configured proxy to execute call from Postman to Azure environments like AAT)
+
+#### Sign In
+1. Set username and password in globals
+2. Execute sign-in request
+3. The access token is saved in globals and appended later on to every request
+
+### Actions and entity modifications
+Complex transaction mechanism requires keeping track of transactionIds, versions, commit and rollback etc.
+To ease that, postman globals keep track of recent transactionId and recently modified entity (namely: its 'id' and 'version')
+These variables are injected into bodies of other requests, ie:
+1. Create a session -> transactionId and recentSessionId variables are saved as globals
+2. Commit/Rollback transaction requests have the latest transactionId injected into their bodies automatically
+3. Get session by id -> obtain created session and save its 'version' value to globals to avoid OptimisticLockConflicts in further requests
+3. Amend a session -> 'recentSessionId' and 'version' are injected into its body, so you can easily modify previously created session
+4. Commit/Rollback
 
 ## License
 
