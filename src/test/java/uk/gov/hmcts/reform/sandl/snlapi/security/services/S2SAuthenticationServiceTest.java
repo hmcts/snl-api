@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RunWith(SpringRunner.class)
 public class S2SAuthenticationServiceTest {
@@ -23,6 +24,7 @@ public class S2SAuthenticationServiceTest {
 
     @Before
     public void setup() {
+        getContext().setAuthentication(null);
         s2SAuthenticationService = new S2SAuthenticationService(SECRET_EVENTS, DEFAULT_EXPIRY);
     }
 
@@ -37,7 +39,7 @@ public class S2SAuthenticationServiceTest {
 
     @Test
     public void tokenCreator_createToken_forRules_containsProperFields() {
-        final String token = s2SAuthenticationService.new TokenCreator(
+        final String token = s2SAuthenticationService.new S2StokenCreator(
             SECRET_EVENTS, DEFAULT_EXPIRY, SERVICE_NAME_SNL_API)
             .createToken();
 

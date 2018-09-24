@@ -1,15 +1,10 @@
 package uk.gov.hmcts.reform.sandl.snlapi.security.services;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+import uk.gov.hmcts.reform.sandl.snlapi.security.token.TokenCreator;
 
 @Slf4j
 @Service
@@ -17,14 +12,14 @@ public class S2SAuthenticationService {
 
     public static final String HEADER_NAME = "Authorization";
     public static final String HEADER_CONTENT_PREFIX = "Bearer ";
-    private final TokenCreator tokenCreator;
+    private final S2StokenCreator tokenCreator;
 
 
     public S2SAuthenticationService(
-        @Value("${management.security.events.jwtSecret}")  String jwtSecret,
+        @Value("${management.security.events.jwtSecret}") String jwtSecret,
         @Value("${management.security.events.jwtExpirationInMs}") long jwtExpirationInMs
     ) {
-        this.tokenCreator = new TokenCreator(jwtSecret, jwtExpirationInMs, "snl-api");
+        this.tokenCreator = new S2StokenCreator(jwtSecret, jwtExpirationInMs, "snl-api");
     }
 
     public HttpHeaders createAuthenticationHeader() {
@@ -33,39 +28,18 @@ public class S2SAuthenticationService {
         return headers;
     }
 
-    class TokenCreator {
-        private String secret;
-        private long expiration;
-        private String serviceName;
+    class S2StokenCreator {
+        private TokenCreator tokenCreator;
 
-        TokenCreator(String secret, long expiration, String serviceName) {
-            this.secret = secret;
-            this.expiration = expiration;
-            this.serviceName = serviceName;
+        S2StokenCreator(String secret, long expiration, String serviceName) {
+            this.tokenCreator = new TokenCreator(secret, expiration);
+            tokenCreator.addClaim("service", serviceName);
         }
 
         String createToken() {
-            Date now = new Date();
-            Date expiryDate = new Date(now.getTime() + expiration);
-
-            String userName = findCurrentUser();
-
-            return Jwts.builder()
-                .claim("service", serviceName)
-                .claim("user", userName)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+            tokenCreator.addClaim("user", tokenCreator.getCurrentUserName());
+            return tokenCreator.createToken();
         }
 
-        private String findCurrentUser() {
-            if (getContext() != null && getContext().getAuthentication() != null
-                && getContext().getAuthentication().isAuthenticated()) {
-                return getContext().getAuthentication().getName();
-            } else {
-                return "anonymous";
-            }
-        }
     }
 }
