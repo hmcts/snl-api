@@ -1,14 +1,13 @@
 {
 	"info": {
 		"name": "hmcts-snl-api",
-		"_postman_id": "6c82aea6-f035-d529-3352-7bda4ce61623",
+		"_postman_id": "ba8902d4-d5ac-6883-8835-d4ad22ce4776",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "auth",
-			"description": "",
 			"item": [
 				{
 					"name": "sign-in",
@@ -37,12 +36,11 @@
 							"raw": "{\"username\":\"{{username}}\",\"password\":\"{{password}}\"}\n"
 						},
 						"url": {
-							"raw": "http://localhost:8090/security/signin",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/security/signin",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"security",
 								"signin"
@@ -76,12 +74,11 @@
 							"raw": "{\"username\":\"{{username}}\",\"password\":\"{{password}}\"}\n"
 						},
 						"url": {
-							"raw": "http://localhost:8090/security/user",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/security/user",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"security",
 								"user"
@@ -94,7 +91,6 @@
 		},
 		{
 			"name": "rooms",
-			"description": "",
 			"item": [
 				{
 					"name": "get",
@@ -121,12 +117,11 @@
 							"raw": "{\n\t\"type\": \"insert-availability\",\n\t\"data\": \"{\\\"id\\\":\\\"a1\\\",\\\"judgeId\\\":\\\"b5bc80ec-8306-4f0f-8c6e-af218bb116c2\\\",\\\"start\\\":\\\"2018-04-12T15:24:05.255+01:00\\\",\\\"duration\\\": 1000000}\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/room",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/room",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"room"
 							]
@@ -137,11 +132,111 @@
 			]
 		},
 		{
-			"name": "hearing-parts",
-			"description": "",
+			"name": "sessions",
 			"item": [
 				{
-					"name": "Create hearing part",
+					"name": "Get session by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"recentSessionVersion\", pm.response.json().version);",
+									"",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"type\": \"insert-availability\",\n\t\"data\": \"{\\\"id\\\":\\\"a1\\\",\\\"judgeId\\\":\\\"b5bc80ec-8306-4f0f-8c6e-af218bb116c2\\\",\\\"start\\\":\\\"2018-04-12T15:24:05.255+01:00\\\",\\\"duration\\\": 1000000}\"\n}"
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/sessions/{{recentSessionId}}",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"sessions",
+								"{{recentSessionId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get sessions within dates",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"type\": \"insert-availability\",\n\t\"data\": \"{\\\"id\\\":\\\"a1\\\",\\\"judgeId\\\":\\\"b5bc80ec-8306-4f0f-8c6e-af218bb116c2\\\",\\\"start\\\":\\\"2018-04-12T15:24:05.255+01:00\\\",\\\"duration\\\": 1000000}\"\n}"
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/sessions?startDate=02-09-2018&endDate=09-09-2018",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"sessions"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "02-09-2018",
+									"equals": true
+								},
+								{
+									"key": "endDate",
+									"value": "09-09-2018",
+									"equals": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Amend Session",
 					"event": [
 						{
 							"listen": "test",
@@ -174,21 +269,145 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"id\":\"{{$guid}}\",\"caseNumber\":\"number-2018-08-24T10:15:28.393Z\",\"caseTitle\":\"title-2018-08-24T10:15:28.393Z\",\"caseType\":\"SCLAIMS\",\"hearingType\":\"Preliminary Hearing\",\"duration\":\"PT30M\",\"scheduleStart\":\"2018-08-24T10:15:28.393Z\",\"scheduleEnd\":\"2018-09-23T10:15:28.395Z\",\"priority\":\"Low\",\"version\":0}"
+							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"id\":\"{{recentSessionId}}\",\"caseNumber\":\"number-2018-08-24T10:15:28.393Z\",\"caseTitle\":\"title-2018-08-24T10:15:28.393Z\",\"caseType\":\"SCLAIMS\",\"hearingType\":\"Preliminary Hearing\",\"duration\":\"PT30M\",\"scheduleStart\":\"2018-08-24T10:15:28.393Z\",\"scheduleEnd\":\"2018-09-23T10:15:28.395Z\",\"priority\":\"Low\",\"version\":0}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/hearing-part/create",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/sessions/amend",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
+							"path": [
+								"sessions",
+								"amend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Session",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"recentTransactionId\", pm.response.json().id);",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var uuid = require('uuid');",
+									"",
+									"pm.globals.set(\"recentSessionId\", uuid.v4());"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"personId\":\"ce9f377d-10c9-478c-838a-574612579db7\",\"roomId\":\"bdba871e-17ab-44b0-9390-98a86bde83b9\",\"caseType\":null,\"sessionTypeCode\":\"fast-track---trial-only\",\"duration\":1800,\"start\":\"2018-09-20T05:38:32.536Z\",\"id\":\"{{recentSessionId}}\"}"
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/sessions",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "hearing-parts",
+			"item": [
+				{
+					"name": "Create hearing part",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"recentTransactionId\", pm.response.json().id);"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var uuid = require('uuid');",
+									"",
+									"pm.globals.set(\"recentHearingPartId\", uuid.v4());",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"id\":\"{{recentHearingPartId}}\",\"caseNumber\":\"number-2018-08-24T10:15:28.393Z\",\"caseTitle\":\"title-2018-08-24T10:15:28.393Z\",\"caseType\":\"SCLAIMS\",\"hearingType\":\"Preliminary Hearing\",\"duration\":\"PT30M\",\"scheduleStart\":\"2018-08-24T10:15:28.393Z\",\"scheduleEnd\":\"2018-09-23T10:15:28.395Z\",\"priority\":\"Low\",\"version\":\"{{recentHearingPartVersion}}\"}"
+						},
+						"url": {
+							"raw": "{{hostname}}:{{port}}/hearing-part/create",
+							"host": [
+								"{{hostname}}"
+							],
+							"port": "{{port}}",
 							"path": [
 								"hearing-part",
 								"create"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -226,21 +445,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"id\":\"caa370ce-7208-4182-b133-12d2b498cfb7\",\"caseNumber\":\"number-2018-08-24T10:15:28.393Z\",\"caseTitle\":\"title-2018-08-24T10:15:28.393Z\",\"caseType\":\"SCLAIMS\",\"hearingType\":\"Preliminary Hearing\",\"duration\":\"PT30M\",\"scheduleStart\":\"2018-08-24T10:15:28.393Z\",\"scheduleEnd\":\"2018-09-23T10:15:28.395Z\",\"priority\":\"Low\",\"version\":0}"
+							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"id\":\"{{recentHearingPartId}}\",\"caseNumber\":\"ASD\",\"caseTitle\":\"title-2018-08-24T10:15:28.393Z\",\"caseType\":\"SCLAIMS\",\"hearingType\":\"Preliminary Hearing\",\"duration\":\"PT30M\",\"scheduleStart\":\"2018-08-24T10:15:28.393Z\",\"scheduleEnd\":\"2018-09-23T10:15:28.395Z\",\"priority\":\"Low\",\"version\":\"{{recentHearingPartVersion}}\"}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/hearing-part/update",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/hearing-part/update",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"hearing-part",
 								"update"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -278,26 +495,36 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"hearingPartId\":\"f1cd24d9-1844-4318-b462-31cd48295c43\",\"hearingPartVersion\":0}"
+							"raw": "{\"userTransactionId\": \"{{$guid}}\", \"hearingPartId\":\"{{recentHearingPartId}}\",\"hearingPartVersion\":\"{{recentHearingPartVersion}}\"}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/hearing-part/delete",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/hearing-part/delete",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"hearing-part",
 								"delete"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Get by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.globals.set(\"recentHearingPartVersion\", pm.response.json().version);",
+									""
+								]
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -321,15 +548,14 @@
 							"raw": "{\n\t\"type\": \"insert-availability\",\n\t\"data\": \"{\\\"id\\\":\\\"a1\\\",\\\"judgeId\\\":\\\"b5bc80ec-8306-4f0f-8c6e-af218bb116c2\\\",\\\"start\\\":\\\"2018-04-12T15:24:05.255+01:00\\\",\\\"duration\\\": 1000000}\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:8090/hearing-part/83b7ef28-1768-4129-99f7-fb0719009bdf",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/hearing-part/{{recentHearingPartId}}",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"hearing-part",
-								"83b7ef28-1768-4129-99f7-fb0719009bdf"
+								"{{recentHearingPartId}}"
 							]
 						}
 					},
@@ -339,12 +565,10 @@
 		},
 		{
 			"name": "listing-requests",
-			"description": "",
 			"item": []
 		},
 		{
 			"name": "transactions",
-			"description": "",
 			"item": [
 				{
 					"name": "Commit transaction",
@@ -371,19 +595,17 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8090/user-transaction/{{recentTransactionId}}/commit",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/user-transaction/{{recentTransactionId}}/commit",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"user-transaction",
 								"{{recentTransactionId}}",
 								"commit"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -412,19 +634,17 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8090/user-transaction/{{recentTransactionId}}/rollback",
-							"protocol": "http",
+							"raw": "{{hostname}}:{{port}}/user-transaction/{{recentTransactionId}}/rollback",
 							"host": [
-								"localhost"
+								"{{hostname}}"
 							],
-							"port": "8090",
+							"port": "{{port}}",
 							"path": [
 								"user-transaction",
 								"{{recentTransactionId}}",
 								"rollback"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}

@@ -1,5 +1,5 @@
 {
-  "id": "17a24f6e-b8fc-a3e0-4f0e-4aba9655690f",
+  "id": "f48e09ea-f0ae-5303-2e5a-b373c66aeabb",
   "name": "Postman Globals",
   "values": [
     {
@@ -16,18 +16,42 @@
     },
     {
       "key": "accessToken",
-      "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvZmZpY2VyMSIsImlhdCI6MTUzNTUyOTQ2NiwiZXhwIjoxNTM1NTMxMjY2fQ.zURpMyM34iY3rYoQJR1jHfjDuzwZrfQEBmm46icSv9qOHfNuZ8eyvMH2hdmVbEqAZ3cSpuP1CEG5q-cKZGEdpA",
+      "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJvZmZpY2VyMSIsImlhdCI6MTUzNzQyMTQ1MiwiZXhwIjoxNTM3NDIzMjUyfQ.gTSCBoHhAVbz3HWydVzazY1i0fgSFQlNtilAjqp4qxHVSFbhqjYMa72Rqh9hqTRW4YYPqGFraPWWtFctK_MG1w",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "recentHearingPartId\n",
+      "value": "",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "recentSessionId",
+      "value": "6280a6ad-1ed1-4a41-b3d3-101ff053a767",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "recentHearingPartId",
+      "value": "0d09910d-1087-4923-bd78-b55a0e0d4ea2",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "recentHearingPartVersion",
+      "value": 1,
       "enabled": true,
       "type": "text"
     },
     {
       "key": "recentTransactionId",
-      "value": "4642b287-6592-4d1c-a452-6141641e2a8e",
+      "value": "d62ade94-8519-46d1-89b3-4897b7081fd5",
       "enabled": true,
       "type": "text"
     }
   ],
   "_postman_variable_scope": "globals",
-  "_postman_exported_at": "2018-08-29T08:01:17.726Z",
+  "_postman_exported_at": "2018-09-20T05:44:50.997Z",
   "_postman_exported_using": "Postman/5.3.2"
 }

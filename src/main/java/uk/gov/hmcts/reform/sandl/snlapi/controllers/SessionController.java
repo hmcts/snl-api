@@ -49,6 +49,11 @@ public class SessionController {
         return eventsCommunicationService.makePutCall("/sessions/update", session);
     }
 
+    @RequestMapping(path = "/amend", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity amendSession(@RequestBody String session) {
+        return eventsCommunicationService.makePostCall("/sessions/amend", session);
+    }
+
     @GetMapping(path = "/judge-diary", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getJudgeDiary(
         @RequestParam("judge") String judgeUsername,
