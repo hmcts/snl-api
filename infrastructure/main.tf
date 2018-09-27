@@ -11,7 +11,7 @@ module "snl-api" {
   location             = "${var.location}"
   env                  = "${var.env}"
   ilbIp                = "${var.ilbIp}"
-  is_frontend          = false
+  is_frontend          = true
   subscription         = "${var.subscription}"
   additional_host_name = "${var.external_host_name}"
   appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
