@@ -18,6 +18,6 @@ module "snl-api" {
   common_tags          = "${var.common_tags}"
 
   app_settings = {
-   SNL_EVENTS_URL = "${local.events_url}"
+   SNL_EVENTS_URL = "http://pr-129-snl-events-preview.service.core-compute-preview.internal"
   }
 }
