@@ -26,7 +26,7 @@ module "snl-api" {
 
 data "azurerm_key_vault" "snl-events-vault" {
   name = "${local.events_keyvault}"
-  resource_group_name = "${var.product}-${var.env}"
+  resource_group_name = "${var.product}-aat"
 }
 
 data "azurerm_key_vault_secret" "snl-events-POSTGRES-USER" {
