@@ -29,6 +29,7 @@ module "snl-api" {
   app_settings = {
     SNL_EVENTS_URL = "${local.events_url}"
     SNL_S2S_JWT_SECRET = "${data.azurerm_key_vault_secret.s2s_jwt_secret.value}"
+    SNL_FRONTEND_JWT_SECRET = "${data.azurerm_key_vault_secret.frontend_jwt_secret.value}"
   }
 }
 
@@ -39,5 +40,10 @@ data "azurerm_key_vault" "snl-shared-vault" {
 
 data "azurerm_key_vault_secret" "s2s_jwt_secret" {
   name      = "s2s-jwt-secret"
+  vault_uri = "${data.azurerm_key_vault.snl-shared-vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "frontend_jwt_secret" {
+  name      = "frontend-jwt-secret"
   vault_uri = "${data.azurerm_key_vault.snl-shared-vault.vault_uri}"
 }
