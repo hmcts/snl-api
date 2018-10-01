@@ -4,8 +4,11 @@ locals {
   aat_events_url = "http://snl-events-aat.service.core-compute-aat.internal"
   local_events_url = "http://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
   events_url = "${var.env == "preview" ? local.aat_events_url : local.local_events_url}"
-  events_keyvault = "${var.env == "preview" ? "events-aat" : var.env}"
 
+  // Shared Resource Group
+  previewResourceGroup = "${var.raw_product}-shared-aat"
+  nonPreviewResourceGroup = "${var.raw_product}-shared-${var.env}"
+  sharedResourceGroup = "${(var.env == "preview" || var.env == "spreview") ? local.previewResourceGroup : local.nonPreviewResourceGroup}"
 }
 module "snl-api" {
   source               = "git@github.com:hmcts/moj-module-webapp"
@@ -20,16 +23,17 @@ module "snl-api" {
   common_tags          = "${var.common_tags}"
 
   app_settings = {
-   SNL_EVENTS_URL = "${local.events_url}"
+    SNL_EVENTS_URL = "${local.events_url}"
+    SNL_S2S_JWT_SECRET = "${data.azurerm_key_vault_secret.s2s_jwt_secret.value}"
   }
 }
 
-data "azurerm_key_vault" "snl-events-vault" {
-  name = "${local.events_keyvault}"
-  resource_group_name = "${var.product}-aat"
+data "azurerm_key_vault" "snl-shared-vault" {
+  name = "${var.raw_product}-${var.env}"
+  resource_group_name = "${local.sharedResourceGroup}"
 }
 
-data "azurerm_key_vault_secret" "snl-events-POSTGRES-USER" {
-  name      = "${var.product}-events-POSTGRES-USER"
-  vault_uri = "${data.azurerm_key_vault.snl-events-vault.vault_uri}"
+data "azurerm_key_vault_secret" "s2s_jwt_secret" {
+  name      = "s2s-jwt-secret"
+  vault_uri = "${data.azurerm_key_vault.snl-shared-vault.vault_uri}"
 }

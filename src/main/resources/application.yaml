@@ -15,7 +15,7 @@ management:
     jwtMaxExpirationInMs: 43200000
     newTokenHeaderName: 'Refreshed-Token'
     events:
-      jwtSecret: "sialaBabaMak"
+      jwtSecret: ${SNL_S2S_JWT_SECRET:"sialaBabaMak"}
       jwtExpirationInMs: 5000
 
 azure:
