@@ -16,7 +16,7 @@ management:
     newTokenHeaderName: 'Refreshed-Token'
     events:
       jwtSecret: "sialaBabaMak"
-      jwtExpirationInMs: 5000
+      jwtExpirationInMs: 30000
 
 azure:
   application-insights:
@@ -48,3 +48,5 @@ spring:
 #        remove-abandoned-timeout: 60
 #        log-abandoned: true
 #        abandon-when-percentage-full: 0
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 30000
