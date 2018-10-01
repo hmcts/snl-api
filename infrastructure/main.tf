@@ -4,6 +4,7 @@ locals {
   aat_events_url = "http://snl-events-aat.service.core-compute-aat.internal"
   local_events_url = "http://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
   events_url = "${var.env == "preview" ? local.aat_events_url : local.local_events_url}"
+  events_keyvault = "${var.env == "preview" ? "events-aat" : var.env}"
 
 }
 module "snl-api" {
@@ -24,10 +25,9 @@ module "snl-api" {
 }
 
 data "azurerm_key_vault" "snl-events-vault" {
-  name = "events-${var.env}"
+  name = "${local.events_keyvault}"
   resource_group_name = "${var.product}-${var.env}"
 }
-
 
 data "azurerm_key_vault_secret" "snl-events-POSTGRES-USER" {
   name      = "${var.product}-events-POSTGRES-USER"
