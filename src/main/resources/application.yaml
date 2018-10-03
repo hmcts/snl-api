@@ -10,12 +10,12 @@ management:
     allowedOrigin: ${ALLOWED_FRONTEND_ORIGIN:*}
     allowedHeaders: ${ALLOWED_HEADERS:*}
     exposeHeaders: ${EXPOSE_HEADERS:Refreshed-Token}
-    jwtSecret: 'AlaMaKotaAKotMaAle'
+    jwtSecret: ${SNL_FRONTEND_JWT_SECRET:"AlaMaKotaAKotMaAle"}
     jwtExpirationInMs: 1800000
     jwtMaxExpirationInMs: 43200000
     newTokenHeaderName: 'Refreshed-Token'
     events:
-      jwtSecret: "sialaBabaMak"
+      jwtSecret: ${SNL_S2S_JWT_SECRET:"sialaBabaMak"}
       jwtExpirationInMs: 30000
 
 azure:
