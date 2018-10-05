@@ -19,8 +19,8 @@ public class ProblemController {
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getProblems() {
-        return eventsCommunicationService.makeCall("/problems", HttpMethod.GET).getBody();
+    public String getProblems(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
+        return eventsCommunicationService.makeCall("/problems?page=" + page + "&size="+ size, HttpMethod.GET).getBody();
     }
 
 
