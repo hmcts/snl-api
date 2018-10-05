@@ -1,1 +1,1 @@
-external_host_name = "api-snl.nonprod.platform.hmcts.net"
+external_host_name = "snl-api.nonprod.platform.hmcts.net"
