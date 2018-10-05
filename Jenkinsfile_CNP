@@ -6,6 +6,15 @@ def product = "snl"
 def component = "api"
 
 withPipeline("java", product, component) {
+  onMaster {
+      enableSlackNotifications('#snl-master-builds')
+  }
+  onDemo {
+      enableSlackNotifications('#snl-demo-builds')
+  }
+  onPR {
+      enableSlackNotifications('#snl-pr-builds')
+  }
   after('checkout') {
     echo 'sln-frontend checked out'
   }
