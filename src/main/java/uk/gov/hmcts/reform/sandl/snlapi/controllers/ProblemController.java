@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/problems")
 public class ProblemController {
@@ -19,10 +21,12 @@ public class ProblemController {
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getProblems(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
-        return eventsCommunicationService.makeCall("/problems?page=" + page + "&size="+ size, HttpMethod.GET).getBody();
+    public String getProblems(@RequestParam("page") Optional<Integer> page,
+                              @RequestParam("size") Optional<Integer> size) {
+        String pagination = (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+        String url = "/problems" +  pagination;
+        return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
-
 
     @GetMapping(path = "by-entity-id", params = "id", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
