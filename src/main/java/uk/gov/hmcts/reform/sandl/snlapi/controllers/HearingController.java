@@ -19,6 +19,5 @@ public class HearingController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getHearingById(@PathVariable("id") String id) {
         return eventsCommunicationService.makeCall("/hearing/{id}", HttpMethod.GET, id).getBody();
-
     }
 }
