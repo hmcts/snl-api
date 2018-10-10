@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(secure = false)
 public class ProblemControllerTest {
 
+    private static final String PAGED_PROBLEMS_URL = "/problems?page=1&size=20";
     private static final String PROBLEMS_URL = "/problems";
     private static final String RESPONSE_BODY = "problem";
 
@@ -42,6 +43,16 @@ public class ProblemControllerTest {
         when(eventsCommunicationServiceMock.makeCall(PROBLEMS_URL, HttpMethod.GET).getBody()).thenReturn(RESPONSE_BODY);
 
         mockMvc.perform(get(PROBLEMS_URL))
+            .andExpect(status().isOk())
+            .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void getPagedProblems_returnsOk() throws Exception {
+        when(eventsCommunicationServiceMock.makeCall(PAGED_PROBLEMS_URL, HttpMethod.GET).getBody()).thenReturn(RESPONSE_BODY);
+
+        mockMvc.perform(get(PAGED_PROBLEMS_URL))
             .andExpect(status().isOk())
             .andExpect(content().string(RESPONSE_BODY))
             .andReturn();
