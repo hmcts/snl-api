@@ -50,7 +50,8 @@ public class ProblemControllerTest {
 
     @Test
     public void getPagedProblems_returnsOk() throws Exception {
-        when(eventsCommunicationServiceMock.makeCall(PAGED_PROBLEMS_URL, HttpMethod.GET).getBody()).thenReturn(RESPONSE_BODY);
+        when(eventsCommunicationServiceMock.makeCall(PAGED_PROBLEMS_URL, HttpMethod.GET).getBody())
+            .thenReturn(RESPONSE_BODY);
 
         mockMvc.perform(get(PAGED_PROBLEMS_URL))
             .andExpect(status().isOk())
