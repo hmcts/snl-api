@@ -10,12 +10,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,6 +54,21 @@ public class HearingControllerTest {
         mockMvc.perform(get(HEARINGS_URL + "/" + uuid))
             .andExpect(status().isOk())
             .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void assignHearingToSession_withCorrectParametersReturnsOk() throws Exception {
+        String hearingPartId = "hearing-id";
+        String sessionId = "session-id";
+        when(eventsCommunicationServiceMock
+            .makePutCall(HEARINGS_URL + "/{hearingId}", sessionId, hearingPartId))
+            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+
+        mockMvc.perform(put(HEARINGS_URL + "/" + hearingPartId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(sessionId))
+            .andExpect(status().isOk())
             .andReturn();
     }
 }
