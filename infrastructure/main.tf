@@ -11,7 +11,7 @@ locals {
 
   // Shared Resources
   vaultName = "${var.raw_product}-${local.envInUse}"
-  sharedResourceGroup = "${var.raw_product}-shared-${local.envInUse}"
+  sharedResourceGroup = "${var.raw_product}-shared-infrastructure-${local.envInUse}"
 }
 
 module "snl-api" {
