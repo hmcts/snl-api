@@ -38,12 +38,20 @@ variable "object_id" {
 
 
 variable "external_host_name" {
-  default = "snl-api.reform.hmcts.net"
+  default = ""
 }
 variable "subscription" {}
 
 variable "appinsights_instrumentation_key" {
   description = "Instrumentation key of the App Insights instance this webapp should use. Module will create own App Insights resource if this is not provided."
+  default = ""
+}
+
+variable "asp_rg" {
+  default = ""
+}
+
+variable "asp_name" {
   default = ""
 }
 

@@ -11,7 +11,11 @@ locals {
 
   // Shared Resources
   vaultName = "${var.raw_product}-${local.envInUse}"
-  sharedResourceGroup = "${var.raw_product}-shared-${local.envInUse}"
+  sharedResourceGroup = "${var.raw_product}-shared-infrastructure-${local.envInUse}"
+  sharedAspName = "${var.raw_product}-${local.envInUse}"
+  sharedAspRg = "${var.raw_product}-shared-infrastructure-${local.envInUse}"
+  asp_name = "${(var.env == "preview" || var.env == "spreview") ? "null" : local.sharedAspName}"
+  asp_rg = "${(var.env == "preview" || var.env == "spreview") ? "null" : local.sharedAspRg}"
 }
 
 module "snl-api" {
@@ -20,10 +24,12 @@ module "snl-api" {
   location             = "${var.location}"
   env                  = "${var.env}"
   ilbIp                = "${var.ilbIp}"
-  is_frontend          = false
+  is_frontend          = "${var.external_host_name != "" ? "1" : "0"}"
+  additional_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
   subscription         = "${var.subscription}"
-  additional_host_name = "${var.external_host_name}"
   appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
+  asp_rg               = "${local.asp_rg}"
+  asp_name             = "${local.asp_name}"
   common_tags          = "${var.common_tags}"
 
   app_settings = {
