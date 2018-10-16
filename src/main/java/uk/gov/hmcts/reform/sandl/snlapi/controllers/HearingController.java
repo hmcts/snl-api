@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("hearing")
@@ -29,5 +33,16 @@ public class HearingController {
         @PathVariable String hearingId,
         @RequestBody String assignment) {
         return eventsCommunicationService.makePutCall("/hearing/{hearingId}", assignment, hearingId);
+    }
+
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getHearings(@RequestParam("isListed") Optional<Boolean> isListed,
+                                  @RequestParam("page") Optional<Integer> page,
+                                  @RequestParam("size") Optional<Integer> size) {
+        String url = "/hearing" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+
+        return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
 }
