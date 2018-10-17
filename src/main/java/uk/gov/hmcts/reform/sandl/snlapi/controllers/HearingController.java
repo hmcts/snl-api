@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,14 +36,15 @@ public class HearingController {
         return eventsCommunicationService.makePutCall("/hearing/{hearingId}", assignment, hearingId);
     }
 
-    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getHearings(@RequestParam("isListed") Optional<Boolean> isListed,
-                                  @RequestParam("page") Optional<Integer> page,
-                                  @RequestParam("size") Optional<Integer> size) {
+    public String searchHearings(@RequestParam(value = "isListed", required = false) Optional<Boolean> isListed,
+                                  @RequestParam(value = "page", required = false) Optional<Integer> page,
+                                  @RequestParam(value = "size", required = false) Optional<Integer> size,
+                                    @RequestBody String searchCriteria) {
         String url = "/hearing" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
         url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
 
-        return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
+        return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }
 }
