@@ -71,4 +71,17 @@ public class HearingControllerTest {
             .andExpect(status().isOk())
             .andReturn();
     }
+
+    @Test
+    public void getHearingByIdWithSessions_returnsWhatEventsReturn() throws Exception {
+        final String id = "02941d80-eeba-4ba1-8d6e-4b1255448736";
+        when(eventsCommunicationServiceMock.makeCall(HEARINGS_URL + "/{id}/with-sessions", HttpMethod.GET, id)
+            .getBody())
+            .thenReturn(RESPONSE_BODY);
+
+        mockMvc.perform(get(HEARINGS_URL + "/" + id + "/with-sessions"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
 }
