@@ -29,6 +29,11 @@ public class HearingController {
         return eventsCommunicationService.makeCall("/hearing/{id}", HttpMethod.GET, id).getBody();
     }
 
+    @GetMapping(path = "/{id}/with-sessions", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getHearingByIdWithSessions(@PathVariable("id") String id) {
+        return eventsCommunicationService.makeCall("/hearing/{id}/with-sessions", HttpMethod.GET, id).getBody();
+    }
+
     @PutMapping(path = "/{hearingId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity assignHearingPartToSession(
         @PathVariable String hearingId,
