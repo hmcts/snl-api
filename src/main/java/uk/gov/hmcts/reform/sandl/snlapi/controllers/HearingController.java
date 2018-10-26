@@ -6,11 +6,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("hearing")
@@ -34,5 +39,17 @@ public class HearingController {
         @PathVariable String hearingId,
         @RequestBody String assignment) {
         return eventsCommunicationService.makePutCall("/hearing/{hearingId}", assignment, hearingId);
+    }
+
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String searchHearings(@RequestParam(value = "page", required = false) Optional<Integer> page,
+                                 @RequestParam(value = "size", required = false) Optional<Integer> size,
+                                 @RequestBody String searchCriteria) {
+
+        String url = "/hearing";
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+
+        return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }
 }
