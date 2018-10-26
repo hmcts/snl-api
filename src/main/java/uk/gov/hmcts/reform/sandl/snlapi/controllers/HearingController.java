@@ -44,9 +44,9 @@ public class HearingController {
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String searchHearings(@RequestParam(value = "isListed", required = false) Optional<Boolean> isListed,
-                                  @RequestParam(value = "page", required = false) Optional<Integer> page,
-                                  @RequestParam(value = "size", required = false) Optional<Integer> size,
-                                    @RequestBody String searchCriteria) {
+                                 @RequestParam(value = "page", required = false) Optional<Integer> page,
+                                 @RequestParam(value = "size", required = false) Optional<Integer> size,
+                                 @RequestBody String searchCriteria) {
         String url = "/hearing" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
         url += (page.isPresent() && size.isPresent()) ? "&page=" + page.get() + "&size=" + size.get() : "";
 
