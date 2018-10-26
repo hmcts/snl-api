@@ -1,6 +1,5 @@
 package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
-import uk.gov.hmcts.reform.sandl.snlapi.utils.HttpUtils;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
