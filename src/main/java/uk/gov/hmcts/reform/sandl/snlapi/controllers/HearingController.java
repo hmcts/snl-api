@@ -48,7 +48,7 @@ public class HearingController {
                                   @RequestParam(value = "size", required = false) Optional<Integer> size,
                                     @RequestBody String searchCriteria) {
         String url = "/hearing" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
-        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+        url += (page.isPresent() && size.isPresent()) ? "&page=" + page.get() + "&size=" + size.get() : "";
 
         return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }

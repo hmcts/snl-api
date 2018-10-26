@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,6 +83,29 @@ public class HearingControllerTest {
         mockMvc.perform(get(HEARINGS_URL + "/" + id + "/with-sessions"))
             .andExpect(status().isOk())
             .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void searchHearings_returnsList() throws Exception {
+        String request = "[\n"
+            + "{\"key\":\"caseNumber\",\"operation\":\"equals\",\"value\":\"NUMBER\"},\n"
+            + "{\"key\":\"caseTitle\",\"operation\":\"like\",\"value\":\"TITLE\"},\n"
+            + "{\"key\":\"priority\",\"operation\":\"in\",\"value\":[\"Medium\",\"High\"]},\n"
+            + "{\"key\":\"caseType\",\"operation\":\"in\",\"value\":[\"fast-track\",\"multi-track\"]},\n"
+            + "{\"key\":\"hearingType\",\"operation\":\"in\",\"value\":[\"trial\",\"K-Application\"]},\n"
+            + "{\"key\":\"communicationFacilitator\",\"operation\":\"in\",\"value\":[\"Interpreter\",\"Digital Assistance\"]},\n"
+            + "{\"key\":\"reservedJudge.id\",\"operation\":\"in or null\",\"value\":[\"651de386-a786-46db-be43-8c03e3ba7a52\"]},\n"
+            + "{\"key\":\"listingStatus\",\"operation\":\"equals\",\"value\":\"unlisted\"}\n"
+            + "]";
+
+        when(eventsCommunicationServiceMock
+            .makePostCall(HEARINGS_URL, request ))
+            .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
+
+        mockMvc.perform(post(HEARINGS_URL).contentType(MediaType.APPLICATION_JSON).content(request))
+            .andExpect(content().string(RESPONSE_BODY))
+            .andExpect(status().isOk())
             .andReturn();
     }
 }
