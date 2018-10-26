@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class HearingControllerTest {
 
     private static final String RESPONSE_BODY = "A";
+    private static final String REQUEST_BODY = "A";
     private static final String HEARINGS_URL = "/hearing";
 
     @Configuration
@@ -88,22 +89,11 @@ public class HearingControllerTest {
 
     @Test
     public void searchHearings_returnsList() throws Exception {
-        String request = "[\n"
-            + "{\"key\":\"caseNumber\",\"operation\":\"equals\",\"value\":\"NUMBER\"},\n"
-            + "{\"key\":\"caseTitle\",\"operation\":\"like\",\"value\":\"TITLE\"},\n"
-            + "{\"key\":\"priority\",\"operation\":\"in\",\"value\":[\"Medium\",\"High\"]},\n"
-            + "{\"key\":\"caseType\",\"operation\":\"in\",\"value\":[\"fast-track\",\"multi-track\"]},\n"
-            + "{\"key\":\"hearingType\",\"operation\":\"in\",\"value\":[\"trial\",\"K-Application\"]},\n"
-            + "{\"key\":\"communicationFacilitator\",\"operation\":\"in\",\"value\":[\"Interpreter\",\"Digital Assistance\"]},\n"
-            + "{\"key\":\"reservedJudge.id\",\"operation\":\"in or null\",\"value\":[\"651de386-a786-46db-be43-8c03e3ba7a52\"]},\n"
-            + "{\"key\":\"listingStatus\",\"operation\":\"equals\",\"value\":\"unlisted\"}\n"
-            + "]";
-
         when(eventsCommunicationServiceMock
-            .makePostCall(HEARINGS_URL, request ))
+            .makePostCall(HEARINGS_URL, REQUEST_BODY))
             .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
 
-        mockMvc.perform(post(HEARINGS_URL).contentType(MediaType.APPLICATION_JSON).content(request))
+        mockMvc.perform(post(HEARINGS_URL).contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
             .andExpect(content().string(RESPONSE_BODY))
             .andExpect(status().isOk())
             .andReturn();

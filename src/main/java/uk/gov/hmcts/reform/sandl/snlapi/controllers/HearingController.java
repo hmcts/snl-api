@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.sandl.snlapi.controllers;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
+import uk.gov.hmcts.reform.sandl.snlapi.utils.HttpUtils;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
@@ -43,12 +46,12 @@ public class HearingController {
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String searchHearings(@RequestParam(value = "isListed", required = false) Optional<Boolean> isListed,
-                                 @RequestParam(value = "page", required = false) Optional<Integer> page,
+    public String searchHearings(@RequestParam(value = "page", required = false) Optional<Integer> page,
                                  @RequestParam(value = "size", required = false) Optional<Integer> size,
                                  @RequestBody String searchCriteria) {
-        String url = "/hearing" +  (isListed.isPresent() ? "?isListed=" + isListed.get() : "");
-        url += (page.isPresent() && size.isPresent()) ? "&page=" + page.get() + "&size=" + size.get() : "";
+
+        String url = "/hearing";
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
 
         return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }
