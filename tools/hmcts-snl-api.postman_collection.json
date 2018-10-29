@@ -118,7 +118,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"type\": \"insert-availability\",\n\t\"data\": \"{\\\"id\\\":\\\"a1\\\",\\\"judgeId\\\":\\\"b5bc80ec-8306-4f0f-8c6e-af218bb116c2\\\",\\\"start\\\":\\\"2018-04-12T15:24:05.255+01:00\\\",\\\"duration\\\": 1000000}\"\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "http://localhost:8090/room",
