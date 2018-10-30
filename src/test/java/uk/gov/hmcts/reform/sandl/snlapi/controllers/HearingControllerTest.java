@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class HearingControllerTest {
 
     private static final String RESPONSE_BODY = "A";
+    private static final String REQUEST_BODY = "A";
     private static final String HEARINGS_URL = "/hearing";
 
     @Configuration
@@ -82,6 +84,18 @@ public class HearingControllerTest {
         mockMvc.perform(get(HEARINGS_URL + "/" + id + "/with-sessions"))
             .andExpect(status().isOk())
             .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
+    public void searchHearings_returnsList() throws Exception {
+        when(eventsCommunicationServiceMock
+            .makePostCall(HEARINGS_URL, REQUEST_BODY))
+            .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
+
+        mockMvc.perform(post(HEARINGS_URL).contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
+            .andExpect(content().string(RESPONSE_BODY))
+            .andExpect(status().isOk())
             .andReturn();
     }
 }
