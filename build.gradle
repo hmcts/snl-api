@@ -193,5 +193,5 @@ sonarqube {
   }
 }
 
-test.finalizedBy integrationFakeEventsTests
+test.finalizedBy integrationTests, integrationFakeEventsTests
 
