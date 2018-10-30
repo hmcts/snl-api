@@ -98,4 +98,16 @@ public class HearingControllerTest {
             .andExpect(status().isOk())
             .andReturn();
     }
+
+    @Test
+    public void searchHearings_returnsListWithPaging() throws Exception {
+        when(eventsCommunicationServiceMock
+            .makePostCall(HEARINGS_URL + "?page=0&size=5", REQUEST_BODY))
+            .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
+
+        mockMvc.perform(post(HEARINGS_URL).contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
+            .andExpect(content().string(RESPONSE_BODY))
+            .andExpect(status().isOk())
+            .andReturn();
+    }
 }
