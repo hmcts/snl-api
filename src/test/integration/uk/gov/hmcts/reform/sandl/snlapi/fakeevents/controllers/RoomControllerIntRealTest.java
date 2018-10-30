@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import uk.gov.hmcts.reform.sandl.snlapi.fakeevents.BaseIntegrationTestWithFakeEvents;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.RestAssured.given;
@@ -15,7 +15,7 @@ public class RoomControllerIntRealTest extends BaseIntegrationTestWithFakeEvents
 
     @Test
     public void rooms_shouldCallProperEventsEndpointAndReturnRooms() throws Exception {
-        stubFor(put(urlEqualTo("/room"))
+        stubFor(get(urlEqualTo("/room"))
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", "application/json")
