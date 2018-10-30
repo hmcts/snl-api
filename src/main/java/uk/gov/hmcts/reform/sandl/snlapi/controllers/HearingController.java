@@ -52,4 +52,9 @@ public class HearingController {
 
         return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }
+
+    @PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateHearingPartAction(@RequestBody String unlistHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/", unlistHearingRequest);
+    }
 }
