@@ -32,42 +32,6 @@ pmd {
   ruleSetFiles = files("config/pmd/ruleset.xml")
 }
 
-jacoco {
-  toolVersion = "0.8.1"
-}
-
-
-
-jacocoTestReport {
-  executionData(test)
-  reports {
-    xml.enabled = true
-    csv.enabled = false
-    xml.destination file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-  }
-
-  afterEvaluate {
-    classDirectories = files(classDirectories.files.collect {
-      fileTree(dir: it,
-        exclude: ['**/*PocHelperController*'])
-    })
-  }
-}
-
-project.tasks['sonarqube'].dependsOn test
-sonarqube {
-  properties {
-    property "sonar.projectName", "Reform :: Scheduling & Listing :: snl-api POC build extension"
-    property "sonar.projectKey", "snl-api"
-    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-    property "sonar.jacoco.itReportPath", "${project.buildDir}/jacoco/integration*Tests.exec"
-    property "sonar.dependencyCheck.reportPath", "${project.buildDir}/reports/dependency-check-report.xml"
-    property "sonar.exclusions", ""
-    property "sonar.test.exclusions", ""
-    property 'sonar.coverage.exclusions', "**/config/**,**/*PocHelperController*"
-  }
-}
-
 dependencyUpdates.resolutionStrategy = {
   componentSelection { rules ->
     rules.all { ComponentSelection selection ->
@@ -204,5 +168,30 @@ task integrationTests(type: Test, description: 'Runs the integration tests.', gr
   }
 }
 
-test.finalizedBy integrationFakeEventsTests
+jacoco {
+  toolVersion = "0.8.1"
+}
+
+jacocoTestReport {
+  executionData(test, integrationTests, integrationFakeEventsTests)
+  reports {
+    xml.enabled = true
+    csv.enabled = false
+    xml.destination file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+  }
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectName", "Reform :: Scheduling & Listing :: snl-api POC build extension"
+    property "sonar.projectKey", "snl-api"
+    property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec,${project.buildDir}/jacoco/integrationFakeEventsTests.exec,${project.buildDir}/jacoco/integrationTests.exec"
+    property "sonar.dependencyCheck.reportPath", "${project.buildDir}/reports/dependency-check-report.xml"
+    property "sonar.exclusions", "**/config/**,**/*PocHelperController*"
+    property "sonar.test.exclusions", ""
+    property 'sonar.coverage.exclusions', "**/config/**,**/*PocHelperController*"
+  }
+}
+
+test.finalizedBy integrationTests, integrationFakeEventsTests
 
