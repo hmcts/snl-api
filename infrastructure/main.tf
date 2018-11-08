@@ -19,12 +19,13 @@ locals {
 }
 
 module "snl-api" {
-  source               = "git@github.com:hmcts/moj-module-webapp"
+  source               = "git@github.com:hmcts/cnp-module-webapp"
   product              = "${var.product}-${var.component}"
   location             = "${var.location}"
   env                  = "${var.env}"
   ilbIp                = "${var.ilbIp}"
   is_frontend          = "${var.external_host_name != "" ? "1" : "0"}"
+  https_only           = "true"
   additional_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
   subscription         = "${var.subscription}"
   appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
