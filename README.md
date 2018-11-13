@@ -1,4 +1,4 @@
-# Scheduling and listing Notes
+# Scheduling and listing API
 [![Build Status](https://travis-ci.org/hmcts/snl-api.svg?branch=master)](https://travis-ci.org/hmcts/snl-api)
 
 ## Purpose
