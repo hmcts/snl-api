@@ -141,6 +141,7 @@ You should get a response similar to this:
 
 ```
   {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
+```
 
 ### Alternative script to run application in Docker
 
@@ -172,7 +173,19 @@ It clears stopped containers correctly. Might consider removing clutter of image
 
 There is no need to remove postgres and java or similar core images.
 
-## Testing
+## Testing and Preparing for Pull Requests
+
+Before creating a PR, ensure that all of the code styling checks and tests have been done locally (they will be caught on Jenkins if there are any discrepancies)
+
+### 1. Code Style
+
+```bash
+./gradlew checkStyleMain
+
+./gradlew checkStyleTest
+```
+
+### 2. Testing
 
 ```bash
 ./gradlew test
