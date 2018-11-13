@@ -1,5 +1,4 @@
-# Scheduling and listing api
-
+# Scheduling and listing Notes
 [![Build Status](https://travis-ci.org/hmcts/snl-api.svg?branch=master)](https://travis-ci.org/hmcts/snl-api)
 
 ## Purpose
@@ -88,13 +87,7 @@ The template contains the following plugins:
       ./gradlew dependencyUpdates -Drevision=release
     ```
 
-## Setup
-
-Located in `./bin/init.sh`. Simply run and follow the explanation how to execute it.
-
-## Building and deploying the application
-
-### Building the application
+## Building the application
 
 The project uses [Gradle](https://gradle.org) as a build tool. It already contains
 `./gradlew` wrapper script, so there's no need to install gradle.
@@ -105,7 +98,7 @@ To build the project execute the following command:
   ./gradlew build
 ```
 
-### Running the application
+## Running the application
 
 Create the image of the application by executing the following command:
 
@@ -118,6 +111,15 @@ Create docker image:
 ```bash
   docker-compose build
 ```
+
+### Running Locally (Recommended)
+
+The application can be run locally using IntelliJ or by executing the following command (in another terminal window):
+```bash
+  ./gradlew bootRun
+```
+
+### Running in Docker
 
 Run the distribution (created in `build/install/snl-api` directory)
 by executing the following command:
@@ -139,37 +141,42 @@ You should get a response similar to this:
 
 ```
   {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
-```
 
-### Alternative script to run application
+### Alternative script to run application in Docker
 
 To skip all the setting up and building, just execute the following command:
 
 ```bash
-./bin/run-in-docker.sh
+  ./bin/run-in-docker.sh
 ```
 
 For more information:
 
 ```bash
-./bin/run-in-docker.sh -h
+  ./bin/run-in-docker.sh -h
 ```
 
 Script includes bare minimum environment variables necessary to start api instance. Whenever any variable is changed or any other script regarding docker image/container build, the suggested way to ensure all is cleaned up properly is by this command:
 
 ```bash
-docker-compose rm
+  docker-compose rm
 ```
 
 It clears stopped containers correctly. Might consider removing clutter of images too, especially the ones fiddled with:
 
 ```bash
-docker images
+  docker images
 
-docker image rm <image-id>
+  docker image rm <image-id>
 ```
 
 There is no need to remove postgres and java or similar core images.
+
+## Testing
+
+```bash
+./gradlew test
+```
 
 ## Hystrix
 
