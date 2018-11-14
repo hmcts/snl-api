@@ -187,9 +187,9 @@ sonarqube {
     property "sonar.projectKey", "snl-api"
     property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec,${project.buildDir}/jacoco/integrationFakeEventsTests.exec,${project.buildDir}/jacoco/integrationTests.exec"
     property "sonar.dependencyCheck.reportPath", "${project.buildDir}/reports/dependency-check-report.xml"
-    property "sonar.exclusions", "**/config/**,**/*PocHelperController*"
+    property "sonar.exclusions", "**/config/**"
     property "sonar.test.exclusions", ""
-    property 'sonar.coverage.exclusions', "**/config/**,**/*PocHelperController*"
+    property 'sonar.coverage.exclusions', "**/config/**"
   }
 }
 
