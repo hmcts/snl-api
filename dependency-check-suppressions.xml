@@ -8,4 +8,8 @@
     <notes>cookie related in applicationinsights-core-2.2.1 which is the newest version atm</notes>
     <cve>CVE-2015-2156</cve>
   </suppress>
+  <suppress>
+    <notes>used only by swagger and in the most recent fox swagger version
+    <cve>CVE-2018-10237</cve>
+  </suppress>
 </suppressions>
