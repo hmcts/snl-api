@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
-
+  <suppress>
+    <notes>SSL related in applicationinsights-core-2.2.1 which is the newest version atm</notes>
+    <cve>CVE-2014-3488</cve>
+  </suppress>
+  <suppress>
+    <notes>cookie related in applicationinsights-core-2.2.1 which is the newest version atm</notes>
+    <cve>CVE-2015-2156</cve>
+  </suppress>
 </suppressions>
