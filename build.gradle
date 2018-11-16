@@ -62,7 +62,7 @@ repositories {
 def versions = [
   logback: '1.2.3',
   reformLogging: '1.5.0',
-  springBoot: springBoot.class.package.implementationVersion,
+  springBoot: '1.5.17.RELEASE',
   springHystrix: '1.4.6.RELEASE',
   springfoxSwagger: '2.9.2'
 ]
