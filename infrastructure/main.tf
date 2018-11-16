@@ -27,6 +27,8 @@ module "snl-api" {
   is_frontend          = "${var.external_host_name != "" ? "1" : "0"}"
   https_only           = "true"
   additional_host_name = "${var.external_host_name != "" ? var.external_host_name : "null"}"
+  capacity             = "1"
+  instance_size        = "I1"
   subscription         = "${var.subscription}"
   appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
   asp_rg               = "${local.asp_rg}"
