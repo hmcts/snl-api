@@ -2,14 +2,17 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
   <suppress>
     <notes>SSL related in applicationinsights-core-2.2.1 which is the newest version atm</notes>
+    <gav regex="true">^io\.netty:netty-tcnative-boringssl-static:.*$</gav>
     <cve>CVE-2014-3488</cve>
   </suppress>
   <suppress>
     <notes>cookie related in applicationinsights-core-2.2.1 which is the newest version atm</notes>
+    <gav regex="true">^io\.netty:netty-tcnative-boringssl-static:.*$</gav>
     <cve>CVE-2015-2156</cve>
   </suppress>
   <suppress>
-    <notes>used only by swagger and in the most recent fox swagger version
+    <notes>guava used only by swagger and in the most recent fox swagger version
+    <gav regex="true">^com\.google\.guava:guava:.*$</gav>
     <cve>CVE-2018-10237</cve>
   </suppress>
 </suppressions>
