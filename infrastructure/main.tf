@@ -5,8 +5,8 @@ locals {
   // to i.e. pr-102-snl so then we need just aat used here
   envInUse = "${(var.env == "preview" || var.env == "spreview") ? "aat" : var.env}"
 
-  aat_events_url = "http://snl-events-aat.service.core-compute-aat.internal"
-  local_events_url = "http://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
+  aat_events_url = "https://snl-events-aat.service.core-compute-aat.internal"
+  local_events_url = "https://snl-events-${var.env}.service.${data.terraform_remote_state.core_apps_compute.ase_name[0]}.internal"
   events_url = "${var.env == "preview" ? local.aat_events_url : local.local_events_url}"
 
   // Shared Resources
