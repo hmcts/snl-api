@@ -80,9 +80,9 @@ dependencies {
 
   compile group: 'ch.qos.logback', name: 'logback-classic', version: versions.logback
   compile group: 'ch.qos.logback', name: 'logback-core', version: versions.logback
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: '2.0.+'
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-logging-logback', version: '2.+'
   compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '2.+'
-  compile group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '1.0.0-BETA'
+  compile group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '1.1.1-BETA'
 
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
