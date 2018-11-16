@@ -11,7 +11,7 @@
     <cve>CVE-2015-2156</cve>
   </suppress>
   <suppress>
-    <notes>guava used only by swagger and in the most recent fox swagger version
+    <notes>guava used only by swagger and in the most recent fox swagger version</notes>
     <gav regex="true">^com\.google\.guava:guava:.*$</gav>
     <cve>CVE-2018-10237</cve>
   </suppress>
