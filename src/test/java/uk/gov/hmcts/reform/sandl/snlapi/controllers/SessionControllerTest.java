@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -145,6 +146,30 @@ public class SessionControllerTest {
         mockMvc.perform(put(URL)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
+            .andReturn();
+    }
+
+    @Test
+    public void searchSession_WithoutPageAndSortReturnsSessions() throws Exception {
+        String url = "/sessions/search";
+        String requestBody = "List of Search Criterion";
+        String response = "Sessions";
+        when(eventsCommunicationServiceMock.makePostCall(url, requestBody).getBody()).thenReturn(response);
+
+        mockMvc.perform(post(url).content(requestBody))
+            .andExpect(content().string(response))
+            .andReturn();
+    }
+
+    @Test
+    public void searchSession_WithPageAndSortReturnsSessions() throws Exception {
+        String url = "/sessions/search?page=0&size=10&sort=startDate:ASC";
+        String requestBody = "List of Search Criterion";
+        String response = "Sessions";
+        when(eventsCommunicationServiceMock.makePostCall(url, requestBody).getBody()).thenReturn(response);
+
+        mockMvc.perform(post(url).content(requestBody))
+            .andExpect(content().string(response))
             .andReturn();
     }
 }

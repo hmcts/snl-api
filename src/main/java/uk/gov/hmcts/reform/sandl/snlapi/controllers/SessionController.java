@@ -49,7 +49,7 @@ public class SessionController {
             url += url.contains("?") ? "&" : "?";
 
             String[] sortPair = sort.get().split(":");
-            url += "sort" + sortPair[0] + ":" + sortPair[1];
+            url += "sort=" + sortPair[0] + ":" + sortPair[1];
         }
 
         return eventsCommunicationService.makePostCall(url, searchCriteriaList);
