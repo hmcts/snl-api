@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/sessions")
 @Secured("ROLE_USER")
@@ -32,6 +34,25 @@ public class SessionController {
         return eventsCommunicationService.makeCall("/sessions?startDate={startDate}&endDate={endDate}",
             HttpMethod.GET, startDate, endDate
         ).getBody();
+    }
+
+    @RequestMapping(path = "/search", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity searchSession(
+        @RequestParam(value = "page", required = false) Optional<Integer> page,
+        @RequestParam(value = "size", required = false) Optional<Integer> size,
+        @RequestParam(value = "sort", required = false) Optional<String> sort,
+        @RequestBody String searchCriteriaList) {
+        String url = "/sessions/search";
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+
+        if (sort.isPresent()) {
+            url += url.contains("?") ? "&" : "?";
+
+            String[] sortPair = sort.get().split(":");
+            url += "sort" + sortPair[0] + ":" + sortPair[1];
+        }
+
+        return eventsCommunicationService.makePostCall(url, searchCriteriaList);
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
