@@ -62,4 +62,9 @@ public class HearingController {
     public ResponseEntity unlistHearingAction(@RequestBody String unlistHearingRequest) {
         return eventsCommunicationService.makePutCall("/hearing/unlist", unlistHearingRequest);
     }
+
+    @PutMapping(path = "/adjourn", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity adjournHearingAction(@RequestBody String adjournHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/adjourn", adjournHearingRequest);
+    }
 }
