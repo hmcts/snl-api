@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,7 +37,7 @@ public class SessionController {
         ).getBody();
     }
 
-    @RequestMapping(path = "/search", method = RequestMethod.POST, produces = "application/json")
+    @PostMapping(path = "/search", produces = "application/json")
     public ResponseEntity searchSession(
         @RequestParam(value = "page", required = false) Optional<Integer> page,
         @RequestParam(value = "size", required = false) Optional<Integer> size,
