@@ -56,6 +56,11 @@ public class SessionController {
         return eventsCommunicationService.makePostCall(url, searchCriteriaList);
     }
 
+    @GetMapping(path = "/amend/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getSessionAmendById(@PathVariable("id") String id) {
+        return eventsCommunicationService.makeCall("/sessions/amend/{id}", HttpMethod.GET, id).getBody();
+    }
+
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getSessionById(@PathVariable("id") String id) {
         return eventsCommunicationService.makeCall("/sessions/{id}", HttpMethod.GET, id).getBody();
