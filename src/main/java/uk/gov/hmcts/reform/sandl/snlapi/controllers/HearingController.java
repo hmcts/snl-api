@@ -58,6 +58,17 @@ public class HearingController {
         return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }
 
+    @GetMapping(path = "/for-listing", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String searchHearingsForListing(@RequestParam(value = "page", required = false) Optional<Integer> page,
+                                 @RequestParam(value = "size", required = false) Optional<Integer> size) {
+
+        String url = "/hearing/for-listing";
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+
+        return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
+    }
+
     @PutMapping(path = "/unlist", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity unlistHearingAction(@RequestBody String unlistHearingRequest) {
         return eventsCommunicationService.makePutCall("/hearing/unlist", unlistHearingRequest);
