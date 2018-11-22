@@ -172,4 +172,19 @@ public class SessionControllerTest {
             .andExpect(content().string(response))
             .andReturn();
     }
+
+    @Test
+    public void getSessionAmend_ReturnsSession() throws Exception {
+        final String uuid = "02941d80-eeba-4ba1-8d6e-4b1255448736";
+        String requestBody = "session amend model";
+        
+        when(eventsCommunicationServiceMock.makeCall("/sessions/amend/{id}", HttpMethod.GET, uuid)
+            .getBody())
+            .thenReturn(requestBody);
+
+        mockMvc.perform(get("/sessions/amend/" + uuid))
+            .andExpect(status().isOk())
+            .andExpect(content().string(requestBody))
+            .andReturn();
+    }
 }
