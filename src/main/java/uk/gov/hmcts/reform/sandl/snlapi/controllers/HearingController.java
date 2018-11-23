@@ -61,10 +61,14 @@ public class HearingController {
     @GetMapping(path = "/for-listing", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String searchHearingsForListing(@RequestParam(value = "page", required = false) Optional<Integer> page,
-                                 @RequestParam(value = "size", required = false) Optional<Integer> size) {
+                         @RequestParam(value = "size", required = false) Optional<Integer> size,
+                         @RequestParam(value = "sortByProperty", required = false) Optional<String> sortByProperty,
+                         @RequestParam(value = "sortByDirection", required = false) Optional<String> sortByDirection) {
 
         String url = "/hearing/for-listing";
         url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+        url += (sortByDirection.isPresent() && sortByProperty.isPresent()) ?
+            "&sortByDirection=" + sortByDirection.get() + "&sortByProperty=" + sortByProperty.get() : "";
 
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
