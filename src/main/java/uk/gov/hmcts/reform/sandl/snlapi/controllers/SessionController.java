@@ -7,12 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/sessions")
@@ -32,6 +35,30 @@ public class SessionController {
         return eventsCommunicationService.makeCall("/sessions?startDate={startDate}&endDate={endDate}",
             HttpMethod.GET, startDate, endDate
         ).getBody();
+    }
+
+    @PostMapping(path = "/search", produces = "application/json")
+    public ResponseEntity searchSession(
+        @RequestParam(value = "page", required = false) Optional<Integer> page,
+        @RequestParam(value = "size", required = false) Optional<Integer> size,
+        @RequestParam(value = "sort", required = false) Optional<String> sort,
+        @RequestBody String searchCriteriaList) {
+        String url = "/sessions/search";
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+
+        if (sort.isPresent()) {
+            url += url.contains("?") ? "&" : "?";
+
+            String[] sortPair = sort.get().split(":");
+            url += "sort=" + sortPair[0] + ":" + sortPair[1];
+        }
+
+        return eventsCommunicationService.makePostCall(url, searchCriteriaList);
+    }
+
+    @GetMapping(path = "/amend/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getSessionAmendById(@PathVariable("id") String id) {
+        return eventsCommunicationService.makeCall("/sessions/amend/{id}", HttpMethod.GET, id).getBody();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

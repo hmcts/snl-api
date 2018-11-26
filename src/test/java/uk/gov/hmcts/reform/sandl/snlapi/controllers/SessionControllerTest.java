@@ -23,6 +23,7 @@ import java.text.MessageFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -145,6 +146,45 @@ public class SessionControllerTest {
         mockMvc.perform(put(URL)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
+            .andReturn();
+    }
+
+    @Test
+    public void searchSession_WithoutPageAndSortReturnsSessions() throws Exception {
+        String url = "/sessions/search";
+        String requestBody = "List of Search Criterion";
+        String response = "Sessions";
+        when(eventsCommunicationServiceMock.makePostCall(url, requestBody).getBody()).thenReturn(response);
+
+        mockMvc.perform(post(url).content(requestBody))
+            .andExpect(content().string(response))
+            .andReturn();
+    }
+
+    @Test
+    public void searchSession_WithPageAndSortReturnsSessions() throws Exception {
+        String url = "/sessions/search?page=0&size=10&sort=startDate:ASC";
+        String requestBody = "List of Search Criterion";
+        String response = "Sessions";
+        when(eventsCommunicationServiceMock.makePostCall(url, requestBody).getBody()).thenReturn(response);
+
+        mockMvc.perform(post(url).content(requestBody))
+            .andExpect(content().string(response))
+            .andReturn();
+    }
+
+    @Test
+    public void getSessionAmend_ReturnsSession() throws Exception {
+        final String uuid = "02941d80-eeba-4ba1-8d6e-4b1255448736";
+        String requestBody = "session amend model";
+        
+        when(eventsCommunicationServiceMock.makeCall("/sessions/amend/{id}", HttpMethod.GET, uuid)
+            .getBody())
+            .thenReturn(requestBody);
+
+        mockMvc.perform(get("/sessions/amend/" + uuid))
+            .andExpect(status().isOk())
+            .andExpect(content().string(requestBody))
             .andReturn();
     }
 }
