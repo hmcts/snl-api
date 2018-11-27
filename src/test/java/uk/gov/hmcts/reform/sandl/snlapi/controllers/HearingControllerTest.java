@@ -105,7 +105,9 @@ public class HearingControllerTest {
             .makeCall(HEARINGS_URL + "/for-listing", HttpMethod.GET))
             .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
 
-        mockMvc.perform(get(HEARINGS_URL + "/for-listing").contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
+        mockMvc.perform(get(HEARINGS_URL + "/for-listing")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(REQUEST_BODY))
             .andExpect(content().string(RESPONSE_BODY))
             .andExpect(status().isOk())
             .andReturn();

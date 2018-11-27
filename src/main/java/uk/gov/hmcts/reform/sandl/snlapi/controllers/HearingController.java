@@ -67,8 +67,8 @@ public class HearingController {
 
         String url = "/hearing/for-listing";
         url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
-        url += (sortByDirection.isPresent() && sortByProperty.isPresent()) ?
-            "&sortByDirection=" + sortByDirection.get() + "&sortByProperty=" + sortByProperty.get() : "";
+        url += (sortByDirection.isPresent() && sortByProperty.isPresent())
+            ? "&sortByDirection=" + sortByDirection.get() + "&sortByProperty=" + sortByProperty.get() : "";
 
         return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
     }
