@@ -67,4 +67,9 @@ public class HearingController {
     public ResponseEntity adjournHearingAction(@RequestBody String adjournHearingRequest) {
         return eventsCommunicationService.makePutCall("/hearing/adjourn", adjournHearingRequest);
     }
+
+    @PutMapping(path = "/withdraw", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity withdrawHearingAction(@RequestBody String withdrawHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/withdraw", withdrawHearingRequest);
+    }
 }
