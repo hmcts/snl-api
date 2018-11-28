@@ -12,7 +12,6 @@ COPY build/libs/$APP /opt/app/
 
 WORKDIR /opt/app
 
-HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD http_proxy="" curl --silent --fail http://localhost:8090/health
+HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD http_proxy="" wget -O health -q http://localhost:8090/health || exit 1
 
 EXPOSE 8090
-
