@@ -138,7 +138,6 @@ public class HearingControllerTest {
             .andReturn();
     }
 
-
     @Test
     public void withdrawHearing_withCorrectParametersReturnsOk() throws Exception {
         String withdrawUrl = HEARINGS_URL + "/withdraw";
@@ -147,6 +146,19 @@ public class HearingControllerTest {
             .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
 
         mockMvc.perform(put(withdrawUrl).contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
+            .andExpect(content().string(RESPONSE_BODY))
+            .andExpect(status().isOk())
+            .andReturn();
+    }
+
+    @Test
+    public void vacateHearing_withCorrectParametersReturnsOk() throws Exception {
+        String vacateUrl = HEARINGS_URL + "/vacate";
+        when(eventsCommunicationServiceMock
+            .makePutCall(vacateUrl, REQUEST_BODY))
+            .thenReturn(new ResponseEntity<>(RESPONSE_BODY, HttpStatus.OK));
+
+        mockMvc.perform(put(vacateUrl).contentType(MediaType.APPLICATION_JSON).content(REQUEST_BODY))
             .andExpect(content().string(RESPONSE_BODY))
             .andExpect(status().isOk())
             .andReturn();
