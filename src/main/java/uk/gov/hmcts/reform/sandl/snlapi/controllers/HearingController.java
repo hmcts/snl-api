@@ -34,6 +34,11 @@ public class HearingController {
         return eventsCommunicationService.makeCall("/hearing/{id}/with-sessions", HttpMethod.GET, id).getBody();
     }
 
+    @GetMapping(path = "/{id}/for-amendment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getHearingByIdForAmendment(@PathVariable("id") String id) {
+        return eventsCommunicationService.makeCall("/hearing/{id}/for-amendment", HttpMethod.GET, id).getBody();
+    }
+
     @PutMapping(path = "/{hearingId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity assignHearingPartToSession(
         @PathVariable String hearingId,
@@ -56,5 +61,15 @@ public class HearingController {
     @PutMapping(path = "/unlist", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity unlistHearingAction(@RequestBody String unlistHearingRequest) {
         return eventsCommunicationService.makePutCall("/hearing/unlist", unlistHearingRequest);
+    }
+
+    @PutMapping(path = "/adjourn", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity adjournHearingAction(@RequestBody String adjournHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/adjourn", adjournHearingRequest);
+    }
+
+    @PutMapping(path = "/withdraw", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity withdrawHearingAction(@RequestBody String withdrawHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/withdraw", withdrawHearingRequest);
     }
 }
