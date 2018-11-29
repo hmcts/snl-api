@@ -88,6 +88,19 @@ public class HearingControllerTest {
     }
 
     @Test
+    public void getHearingForAmendment_returnsWhatEventsReturn() throws Exception {
+        final String id = "02941d80-eeba-4ba1-8d6e-4b1255448736";
+        when(eventsCommunicationServiceMock.makeCall(HEARINGS_URL + "/{id}/for-amendment", HttpMethod.GET, id)
+            .getBody())
+            .thenReturn(RESPONSE_BODY);
+
+        mockMvc.perform(get(HEARINGS_URL + "/" + id + "/for-amendment"))
+            .andExpect(status().isOk())
+            .andExpect(content().string(RESPONSE_BODY))
+            .andReturn();
+    }
+
+    @Test
     public void searchHearings_returnsList() throws Exception {
         when(eventsCommunicationServiceMock
             .makePostCall(HEARINGS_URL, REQUEST_BODY))
