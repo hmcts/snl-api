@@ -162,6 +162,18 @@ public class SessionControllerTest {
     }
 
     @Test
+    public void amendSession_CallsEvents() throws Exception {
+        String url = "/sessions/amend";
+        String requestBody = "A session";
+        String response = "Sessions";
+        when(eventsCommunicationServiceMock.makePostCall(url, requestBody).getBody()).thenReturn(response);
+
+        mockMvc.perform(post(url).content(requestBody))
+            .andExpect(content().string(response))
+            .andReturn();
+    }
+
+    @Test
     public void searchSession_WithPageAndSortReturnsSessions() throws Exception {
         String url = "/sessions/search?page=0&size=10&sort=startDate:ASC";
         String requestBody = "List of Search Criterion";
