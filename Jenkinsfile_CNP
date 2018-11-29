@@ -6,6 +6,7 @@ def product = "snl"
 def component = "api"
 
 withPipeline("java", product, component) {
+  enableDbMigration()
   onMaster {
       enableSlackNotifications('#snl-master-builds')
   }

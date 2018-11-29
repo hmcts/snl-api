@@ -1,0 +1,23 @@
+databaseChangeLog:
+- include:
+    file: db/db-changelog.yaml
+
+- changeSet:
+    id: insert-test-data
+    author: gsedgwick
+    validCheckSum: ANY
+    changes:
+    - sqlFile:
+        path: db/testdata/insert-testdata.sql
+        splitStatements: false
+- changeSet:
+    id: insert-test-data-postgresql-only
+    validCheckSum: ANY
+    author: gsedgwick
+    dbms: postgresql
+    changes:
+    - sqlFile:
+        path: db/testdata/insert-testdata-postgresql.sql
+        splitStatements: false
+# do NOT add more changeset files with test data, use the existing one and maintain what's there
+# to have a good base data for development and testing
