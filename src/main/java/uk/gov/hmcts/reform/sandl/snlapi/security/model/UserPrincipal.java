@@ -37,18 +37,17 @@ public class UserPrincipal implements UserDetails {
     private boolean enabled;
 
     public static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
-            new SimpleGrantedAuthority(role)
-        ).collect(Collectors.toList());
+        List<GrantedAuthority> authorities = user.getRoles().stream().map(SimpleGrantedAuthority::new)
+            .collect(Collectors.toList());
 
         return new UserPrincipal(user.getFullName(),
-                                             user.getUsername(),
-                                             user.getPassword(),
-                                             authorities,
-                                             true,
-                                             true,
-                                             !user.isResetRequired(),
-                                             user.isEnabled());
+                                 user.getUsername(),
+                                 user.getPassword(),
+                                 authorities,
+                                 true,
+                                 true,
+                                 !user.isResetRequired(),
+                                 user.isEnabled());
     }
 
     @Override

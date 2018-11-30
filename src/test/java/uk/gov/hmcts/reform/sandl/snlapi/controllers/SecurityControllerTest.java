@@ -31,6 +31,8 @@ public class SecurityControllerTest {
     private static final String OFFICER_RESET_REQUIRED = "officer_reset_required";
     private static final String OFFICER_NOT_ENABLED = "officer_not_enabled";
     private static final String UNKNOWN_USER = "unknown";
+    private static final String ENCODED_ASD_PASSWORD =
+        "fa2fbd666a080874b7d83e611aa1a4e67f8c010fef1b19d7725725aa74f177a324b6c033e1abaf9e";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
@@ -65,7 +67,7 @@ public class SecurityControllerTest {
 
     @Test
     public void shouldNotLogin_whenWrongPassword() throws Exception {
-        checkUser(OFFICER1, "$2a$12$PjtPypb9NiQZuzEz2z5.Ge5vQSOJwO8TEI0KoGxnbOxbt5kGT.0Iy", true, false);
+        checkUser(OFFICER1, ENCODED_ASD_PASSWORD, true, false);
 
         LoginRequest loginRequest = new LoginRequest(OFFICER1, "wrong pass");
 
@@ -78,7 +80,7 @@ public class SecurityControllerTest {
 
     @Test
     public void shouldNotLogin_whenCredentialsExpired() throws Exception {
-        checkUser(OFFICER_RESET_REQUIRED, "$2a$12$PjtPypb9NiQZuzEz2z5.Ge5vQSOJwO8TEI0KoGxnbOxbt5kGT.0Iy", true, true);
+        checkUser(OFFICER_RESET_REQUIRED, ENCODED_ASD_PASSWORD, true, true);
 
         LoginRequest loginRequest = new LoginRequest(OFFICER_RESET_REQUIRED, "asd");
 
@@ -91,7 +93,7 @@ public class SecurityControllerTest {
 
     @Test
     public void shouldNotLogin_whenUserNotEnabled() throws Exception {
-        checkUser(OFFICER_NOT_ENABLED, "$2a$12$PjtPypb9NiQZuzEz2z5.Ge5vQSOJwO8TEI0KoGxnbOxbt5kGT.0Iy", false, false);
+        checkUser(OFFICER_NOT_ENABLED, ENCODED_ASD_PASSWORD, false, false);
 
         LoginRequest loginRequest = new LoginRequest(OFFICER_NOT_ENABLED, "asd");
 
