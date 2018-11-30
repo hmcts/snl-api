@@ -38,7 +38,7 @@ services:
       - SNL_API_DB_USERNAME=snluser
       - SNL_API_DB_PASSWORD=snlpass
     ports:
-      - 8094:8094
+      - 8090:8090
     networks:
       - snl-api-network
 networks:
