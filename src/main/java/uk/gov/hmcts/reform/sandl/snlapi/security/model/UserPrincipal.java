@@ -1,9 +1,9 @@
 package uk.gov.hmcts.reform.sandl.snlapi.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Data
 public class UserPrincipal implements UserDetails {
 
@@ -32,8 +31,8 @@ public class UserPrincipal implements UserDetails {
     @NonNull
     private Collection<? extends GrantedAuthority> authorities;
 
-    private boolean accountNonExpired = true;
-    private boolean accountNonLocked = true;
+    private boolean accountNonExpired;
+    private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
 
@@ -42,14 +41,14 @@ public class UserPrincipal implements UserDetails {
             new SimpleGrantedAuthority(role)
         ).collect(Collectors.toList());
 
-        UserPrincipal up = new UserPrincipal();
-        up.setFullName(user.getFullName());
-        up.setUsername(user.getUsername());
-        up.setPassword(user.getPassword());
-        up.setAuthorities(authorities);
-        up.setCredentialsNonExpired(!user.isResetRequired());
-        up.setEnabled(user.isEnabled());
-        return up;
+        return new UserPrincipal(user.getFullName(),
+                                             user.getUsername(),
+                                             user.getPassword(),
+                                             authorities,
+                                             true,
+                                             true,
+                                             !user.isResetRequired(),
+                                             user.isEnabled());
     }
 
     @Override
