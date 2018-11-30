@@ -3,8 +3,9 @@ package uk.gov.hmcts.reform.sandl.snlapi.security.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,21 +16,22 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Data
+@Getter
+@ToString
 public class UserPrincipal implements UserDetails {
 
     @NonNull
-    private String fullName;
+    private final String fullName;
 
     @NonNull
-    private String username;
+    private final String username;
 
     @NonNull
     @JsonIgnore
-    private String password;
+    private final String password;
 
     @NonNull
-    private Collection<? extends GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     private boolean accountNonExpired;
     private boolean accountNonLocked;
