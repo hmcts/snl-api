@@ -29,7 +29,7 @@ azure:
 #If you use a database then uncomment below lines and update db properties accordingly leaving tomcat connection settings unchanged.
 spring:
   application:
-    name: Spring Boot Template
+    name: snl-api
   datasource:
     url: jdbc:postgresql://${SNL_API_DB_HOST:localhost}:${SNL_API_DB_PORT:5434}/${SNL_API_DB_NAME:snl}${SNL_API_DB_PARAMS:?}
     username: ${SNL_API_DB_USERNAME:snluser}

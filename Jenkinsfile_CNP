@@ -2,25 +2,49 @@
 
 @Library("Infrastructure")
 
+def type = "java"
 def product = "snl"
 def component = "api"
 
-withPipeline("java", product, component) {
-  enableDbMigration()
-  onMaster {
-      enableSlackNotifications('#snl-master-builds')
-  }
-  onDemo {
-      enableSlackNotifications('#snl-demo-builds')
-  }
-  onPR {
-      enableSlackNotifications('#snl-pr-builds')
-  }
-  after('checkout') {
-    echo 'sln-frontend checked out'
-  }
+List<LinkedHashMap<String, Object>> secrets = [
+    secret('s2s-jwt-secret', 'SNL_S2S_JWT_SECRET'),
+    secret('frontend-jwt-secret', 'SNL_FRONTEND_JWT_SECRET')
+]
 
-  before('buildinfra:prod') {
-    error 'This is PoC project for Scheduling and Listing therefore the prod environment will not be built'
-  }
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
+}
+
+withPipeline(type, product, component) {
+    enableDbMigration()
+    onMaster {
+        enableSlackNotifications('#snl-master-builds')
+    }
+    onDemo {
+        enableSlackNotifications('#snl-demo-builds')
+    }
+    onPR {
+        enableSlackNotifications('#snl-pr-builds')
+    }
+    after('checkout') {
+      echo 'sln-api checked out'
+    }
+
+    before('buildinfra:prod') {
+      error 'This is PoC project for Scheduling and Listing therefore the prod environment will not be built'
+    }
+
+    echo env.CHANGE_TITLE
+    if (env.CHANGE_TITLE && !env.CHANGE_TITLE.contains('[PREVIEW]')
+      && env.CHANGE_TITLE.contains('[AKS]')) {
+      loadVaultSecrets(secrets)
+      setVaultName('snl')
+      enableDockerBuild()
+      enableDeployToAKS()
+    }
 }
