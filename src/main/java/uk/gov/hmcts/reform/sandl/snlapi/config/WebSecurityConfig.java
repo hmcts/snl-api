@@ -74,7 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     "/**/*.html",
                     "/**/*.css",
                     "/**/*.js",
-                    "/health", "/login", "/security/signin")
+                    "/health", "/login", "/security/signin",
+                    "/swagger-ui.html", "/swagger-resources/**", "/webjars/springfox-swagger-ui/**", "/v2/api-docs"
+                )
                 .permitAll()
                 .and()
             .authorizeRequests()
@@ -82,6 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .csrf()
                 .disable()
+            .formLogin().disable()
             .cors()
         ;
         // Add our custom JWT security filter
