@@ -18,6 +18,20 @@ spec:
         - image: ${IMAGE_NAME}
           name: ${SERVICE_NAME}
           env:
+            - name: SNL_API_DB_HOST
+              value: "localhost"
+            - name: SNL_API_DB_PORT
+              value: "5432"
+            - name: SNL_API_DB_NAME
+              value: "snl-api"
+            - name: SNL_API_DB_USERNAME
+              value: "snluser"
+            - name: SNL_API_DB_PASSWORD
+              value: "snlpass"
+            - name: SNL_API_DB_PARAMS
+              value: "?sslmode=disable"
+            - name: ENABLE_DB_MIGRATE_IN_SERVICE
+              value: "true"
             - name: SNL_S2S_JWT_SECRET
               value: "${SNL_S2S_JWT_SECRET}"
             - name: SNL_FRONTEND_JWT_SECRET
@@ -35,6 +49,29 @@ spec:
           ports:
             - containerPort: 8090
               name: http
+          imagePullPolicy: Always
+      #
+      # Postgres Container
+      #
+        - image: postgres:10-alpine
+          name: ${SERVICE_NAME}-postgres
+          env:
+          - name: POSTGRES_DB
+            value: snl-api
+          - name: POSTGRES_USER
+            value: snluser
+          - name: POSTGRES_PASSWORD
+            value: snlpass
+          envFrom:
+          - configMapRef:
+              name: ${SERVICE_NAME}-config
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
           imagePullPolicy: Always
 ---
 #
