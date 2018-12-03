@@ -58,8 +58,38 @@ public class HearingController {
         return eventsCommunicationService.makePostCall(url, searchCriteria).getBody();
     }
 
+    @GetMapping(path = "/for-listing", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String searchHearingsForListing(@RequestParam(value = "page", required = false) Optional<Integer> page,
+                         @RequestParam(value = "size", required = false) Optional<Integer> size,
+                         @RequestParam(value = "sortByProperty", required = false) Optional<String> sortByProperty,
+                         @RequestParam(value = "sortByDirection", required = false) Optional<String> sortByDirection) {
+
+        String url = "/hearing/for-listing";
+        url += (page.isPresent() && size.isPresent()) ? "?page=" + page.get() + "&size=" + size.get() : "";
+        url += (sortByDirection.isPresent() && sortByProperty.isPresent())
+            ? "&sortByDirection=" + sortByDirection.get() + "&sortByProperty=" + sortByProperty.get() : "";
+
+        return eventsCommunicationService.makeCall(url, HttpMethod.GET).getBody();
+    }
+
     @PutMapping(path = "/unlist", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity unlistHearingAction(@RequestBody String unlistHearingRequest) {
         return eventsCommunicationService.makePutCall("/hearing/unlist", unlistHearingRequest);
+    }
+
+    @PutMapping(path = "/adjourn", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity adjournHearingAction(@RequestBody String adjournHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/adjourn", adjournHearingRequest);
+    }
+
+    @PutMapping(path = "/withdraw", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity withdrawHearingAction(@RequestBody String withdrawHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/withdraw", withdrawHearingRequest);
+    }
+
+    @PutMapping(path = "/vacate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity vacateHearingAction(@RequestBody String vacateHearingRequest) {
+        return eventsCommunicationService.makePutCall("/hearing/vacate", vacateHearingRequest);
     }
 }
