@@ -34,18 +34,26 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @NotBlank
     private String username;
+
     @NotNull
     private String password;
+
     @NotNull
     private LocalDateTime passwordLastUpdated;
+
     @NotNull
     private String fullName;
+
     @NotNull
     private String email;
+
     private boolean enabled = true;
+
     private boolean resetRequired = true;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
