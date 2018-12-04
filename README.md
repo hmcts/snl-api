@@ -10,6 +10,7 @@ The purpose of this service is to provide endpoints for and work with the [front
 
 It contains:
  * application
+ * database schema change-sets using [Liquibase](https://www.liquibase.org/)
  * docker setup
  * swagger configuration for api documentation
  * MIT license and contribution information
@@ -44,6 +45,11 @@ Create docker image:
 
 ### Running Locally (Recommended)
 
+For this approach, the database must still be served via docker:
+```bash
+  docker-compose up snl-api-db
+```
+
 The application can be run locally using IntelliJ or by executing the following command (in another terminal window):
 ```bash
   ./gradlew bootRun
@@ -58,7 +64,7 @@ by executing the following command:
   docker-compose up
 ```
 
-This will start the API container exposing the application's port `8090`
+This will start the API container exposing the application's port `8090` and PostgreSql database.
 
 
 In order to test if the application is up, you can call its health endpoint:
