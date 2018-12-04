@@ -15,6 +15,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
 import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
 import java.io.IOException;
@@ -48,6 +49,8 @@ public class JwtAuthenticationFilterTest {
 
     @MockBean
     private JwtTokenProvider tokenProvider;
+    @MockBean
+    private UserRepository userRepository;
     @SpyBean
     private CustomUserDetailsService userDetailsService;
 
@@ -57,6 +60,8 @@ public class JwtAuthenticationFilterTest {
         this.response = new MockHttpServletResponse();
         this.chain = mock(FilterChain.class);
         SecurityContextHolder.clearContext();
+
+        MockUserRepository.setupMocks(userRepository);
     }
 
     @Test

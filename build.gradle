@@ -61,6 +61,7 @@ repositories {
   jcenter()
 }
 
+apply from: 'liquibase.gradle'
 // it is important to specify logback classic and core packages explicitly as libraries like spring boot
 // enforces it's own (older) version which is not recommended.
 def versions = [
@@ -68,7 +69,8 @@ def versions = [
   reformLogging: '1.5.0',
   springBoot: '1.5.17.RELEASE',
   springHystrix: '1.4.6.RELEASE',
-  springfoxSwagger: '2.9.2'
+  springfoxSwagger: '2.9.2',
+  hibernate: '5.3.7.Final'
 ]
 
 dependencies {
@@ -80,6 +82,7 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBoot
 
   compile group: 'ch.qos.logback', name: 'logback-classic', version: versions.logback
@@ -88,8 +91,16 @@ dependencies {
   compile group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '2.+'
   compile group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '1.1.1-BETA'
 
+  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+  compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.2'
+
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
+
+  compile group: 'org.hibernate', name: 'hibernate-java8', version: versions.hibernate
+  compile group: 'org.hibernate', name: 'hibernate-core', version: versions.hibernate
+  compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: versions.hibernate
+  compile group: 'org.hibernate', name: 'hibernate-envers', version: versions.hibernate
 
   compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: versions.reformLogging
   compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: versions.reformLogging
@@ -101,8 +112,8 @@ dependencies {
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.6'
   testCompile group: 'com.github.tomakehurst', name: 'wiremock', version: '2.19.0', ext: 'pom'
-
   testCompile group: 'org.springframework.cloud', name: 'spring-cloud-contract-wiremock', version: '1.2.6.RELEASE'
+  testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
 }
 
 jar {

@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/schema/SL-1583-secure-passwords.yaml

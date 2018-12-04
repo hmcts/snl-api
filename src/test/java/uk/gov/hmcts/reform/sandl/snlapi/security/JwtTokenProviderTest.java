@@ -8,8 +8,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.UserPrincipal;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,8 +24,11 @@ public class JwtTokenProviderTest {
     protected JwtTokenProvider jtp;
 
     protected String username = "username";
-    protected String password = "password";
+    // bcrypt hash of "password"
+    protected String password = "$2y$12$CkfWE9BYsfEO/gtx4NiXHuifYFXnaCTbMVPqJQgfqGn0NZoucN7S6";
     protected String fullname = "fullname";
+    protected LocalDateTime passwordLastUpdated = LocalDateTime.now();
+    protected String email = "email";
 
     public JwtTokenProviderTest() {
         this.jtp = new JwtTokenProvider(SECRET, JWT_EXPIRY_MS, MAX_EXPIRY_MS);
@@ -135,7 +138,13 @@ public class JwtTokenProviderTest {
     }
 
     private User createUser() {
-        return new User(username, password, fullname, Collections.emptyList());
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setPasswordLastUpdated(passwordLastUpdated);
+        user.setFullName(fullname);
+        user.setEmail(email);
+        return user;
     }
 
 }

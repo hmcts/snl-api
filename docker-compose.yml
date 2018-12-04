@@ -1,6 +1,17 @@
 version: '2.1'
 
 services:
+  snl-api-db:
+    container_name: snl-api-db
+    build: ./docker/snl-api-db
+    networks:
+      - snl-api-network
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_USER=snluser
+      - POSTGRES_PASSWORD=snlpass
+      - POSTGRES_DB=snl
   snl-api:
     build:
       context: .
@@ -10,6 +21,8 @@ services:
         - no_proxy
     image: docker.artifactory.reform.hmcts.net/reform/snl-api
     container_name: snl-api
+    depends_on:
+      - snl-api-db
     environment:
       # these environment variables are used by java-logging library
       - ROOT_APPENDER
@@ -19,5 +32,16 @@ services:
       - REFORM_TEAM
       - REFORM_ENVIRONMENT
       - SNL_EVENTS_URL=http://localhost:8092
+      - SNL_API_DB_HOST=snl-api-db
+      - SNL_API_DB_PORT=5432
+      - SNL_API_DB_NAME=snl
+      - SNL_API_DB_USERNAME=snluser
+      - SNL_API_DB_PASSWORD=snlpass
     ports:
       - 8090:8090
+    networks:
+      - snl-api-network
+networks:
+  snl-api-network:
+    driver: bridge
+
