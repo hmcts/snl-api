@@ -2,7 +2,7 @@ FROM hmcts/cnp-java-base:openjdk-jre-8-alpine-1.4
 
 # Mandatory!
 ENV APP snl-api.jar
-ENV APPLICATION_TOTAL_MEMORY 512M
+ENV APPLICATION_TOTAL_MEMORY 1024M
 ENV APPLICATION_SIZE_ON_DISK_IN_MB 100
 
 # Optional
