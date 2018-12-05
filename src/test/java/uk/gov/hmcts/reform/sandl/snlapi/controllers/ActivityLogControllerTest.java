@@ -10,12 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.reform.sandl.snlapi.services.EventsCommunicationService;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,7 +33,7 @@ public class ActivityLogControllerTest {
     private EventsCommunicationService eventsCommunicationServiceMock;
 
     @Test
-    public void should_welcome_upon_root_request_with_200_response_code() throws Exception {
+    public void getActivityLog_returnsOk() throws Exception {
         final UUID entityId = UUID.randomUUID();
         when(eventsCommunicationServiceMock.makeCall(URL + "/{entityId}", HttpMethod.GET, entityId.toString())
             .getBody())
