@@ -47,7 +47,6 @@ public class User {
     @NotNull
     private String fullName;
 
-    @NotNull
     private String email;
 
     private boolean enabled = true;

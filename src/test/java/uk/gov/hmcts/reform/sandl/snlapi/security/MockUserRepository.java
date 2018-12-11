@@ -24,7 +24,6 @@ public final class MockUserRepository {
         officer1.setFullName("Listing Officer 1");
         officer1.setPassword(ENCODED_ASD_PASSWORD);
         officer1.setPasswordLastUpdated(LocalDateTime.now());
-        officer1.setEmail("snl_officer1@hmcts.net");
         return officer1;
     }
 }
