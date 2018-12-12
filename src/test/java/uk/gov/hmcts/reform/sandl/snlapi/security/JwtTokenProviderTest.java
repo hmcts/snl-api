@@ -28,7 +28,6 @@ public class JwtTokenProviderTest {
     protected String password = "$2y$12$CkfWE9BYsfEO/gtx4NiXHuifYFXnaCTbMVPqJQgfqGn0NZoucN7S6";
     protected String fullname = "fullname";
     protected LocalDateTime passwordLastUpdated = LocalDateTime.now();
-    protected String email = "email";
 
     public JwtTokenProviderTest() {
         this.jtp = new JwtTokenProvider(SECRET, JWT_EXPIRY_MS, MAX_EXPIRY_MS);
@@ -143,7 +142,6 @@ public class JwtTokenProviderTest {
         user.setPassword(password);
         user.setPasswordLastUpdated(passwordLastUpdated);
         user.setFullName(fullname);
-        user.setEmail(email);
         return user;
     }
 
