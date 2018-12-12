@@ -50,6 +50,14 @@ public class HearingPartController {
             assignment, hearingPartId);
     }
 
+    @PutMapping(path = "/amend-scheduled-listing", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity amendScheduledListing(@RequestBody String amend) {
+        return eventsCommunicationService.makePutCall(
+            "/hearing-part/amend-scheduled-listing",
+            amend);
+    }
+
     @PostMapping(path = "delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity deleteHearingPart(@RequestBody String deleteHearingPart) {
