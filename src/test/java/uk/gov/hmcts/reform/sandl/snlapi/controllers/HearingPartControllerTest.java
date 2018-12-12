@@ -122,6 +122,19 @@ public class HearingPartControllerTest {
     }
 
     @Test
+    public void amendScheduledListing_withCorrectParametersReturnsOk() throws Exception {
+        when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL + "/amend-scheduled-listing",
+            RESPONSE_BODY))
+            .thenReturn(new ResponseEntity<>(HttpStatus.OK));
+
+        mockMvc.perform(put(HEARINGS_URL + "/amend-scheduled-listing")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(RESPONSE_BODY))
+            .andExpect(status().isOk())
+            .andReturn();
+    }
+
+    @Test
     public void upsertHearingPart_withCorrectParametersReturnsOk() throws Exception {
         when(eventsCommunicationServiceMock.makePutCall(HEARINGS_URL, RESPONSE_BODY))
             .thenReturn(new ResponseEntity<>(HttpStatus.OK));
