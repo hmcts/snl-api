@@ -1,0 +1,30 @@
+databaseChangeLog:
+- changeSet:
+    id: create-user_tokens-table
+    author: gsedgwick
+    changes:
+    - createTable:
+        tableName: user_tokens
+        columns:
+        - column:
+            name: id
+            type: UUID
+            constraints:
+              nullable: false
+        - column:
+            name: user_id
+            type: int
+            constraints:
+              foreignKeyName: fk_user_tokens_user
+              references: user_data(id)
+              nullable: false
+        - column:
+            name: max_expiry
+            type: datetime
+            constraints:
+              nullable: false
+    - addPrimaryKey:
+        columnNames: id
+        constraintName: pk_user_tokens
+        schemaName: public
+        tableName: user_tokens

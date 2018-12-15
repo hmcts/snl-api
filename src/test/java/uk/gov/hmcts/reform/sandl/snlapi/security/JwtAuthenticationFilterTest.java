@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 
@@ -109,8 +110,13 @@ public class JwtAuthenticationFilterTest {
             }
 
             @Override
-            public boolean isValid() {
+            public boolean isValid(UserRepository userRepository) {
                 return true;
+            }
+
+            @Override
+            public UUID getId() {
+                return null;
             }
         });
 
@@ -154,8 +160,13 @@ public class JwtAuthenticationFilterTest {
             }
 
             @Override
-            public boolean isValid() {
+            public boolean isValid(UserRepository userRepository) {
                 return true;
+            }
+
+            @Override
+            public UUID getId() {
+                return null;
             }
         };
     }
@@ -178,8 +189,13 @@ public class JwtAuthenticationFilterTest {
             }
 
             @Override
-            public boolean isValid() {
-                return false;
+            public boolean isValid(UserRepository userRepository) {
+                return true;
+            }
+
+            @Override
+            public UUID getId() {
+                return null;
             }
         };
     }

@@ -12,9 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
+import uk.gov.hmcts.reform.sandl.snlapi.security.JwtTokenProvider;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
 import uk.gov.hmcts.reform.sandl.snlapi.security.requests.LoginRequest;
 import uk.gov.hmcts.reform.sandl.snlapi.security.responses.JwtAuthenticationResponse;
+import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
+
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -40,6 +44,9 @@ public class SecurityControllerTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
     @Test
     public void shouldLogin() throws Exception {
@@ -125,6 +132,8 @@ public class SecurityControllerTest {
         JwtAuthenticationResponse token = objectMapper.readValue(tokenResult.getResponse().getContentAsString(),
             JwtAuthenticationResponse.class);
 
+        addTokenToUser(OFFICER1, token.getAccessToken());
+
         mockMvc.perform(get("/security/user")
             .header("Authorization", "Bearer " + token.getAccessToken())
             .contentType(MediaType.APPLICATION_JSON))
@@ -137,5 +146,15 @@ public class SecurityControllerTest {
         assertEquals(user.getPassword(), encodedPassword);
         assertEquals(isEnabled, user.isEnabled());
         assertEquals(isResetRequired, user.isResetRequired());
+    }
+
+    private void addTokenToUser(String username, String tokenString) {
+        IUserToken token = jwtTokenProvider.parseToken(tokenString);
+        User user = userRepository.findByUsername(username);
+        User.Token userToken = new User.Token();
+        userToken.setId(token.getId());
+        userToken.setMaxExpiry(LocalDateTime.now().plusHours(8));
+        user.addToken(userToken);
+        userRepository.saveAndFlush(user);
     }
 }

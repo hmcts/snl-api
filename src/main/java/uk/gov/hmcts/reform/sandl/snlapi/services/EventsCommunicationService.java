@@ -35,7 +35,7 @@ public class EventsCommunicationService {
         HttpHeaders headers = this.s2SAuthenticationService.createAuthenticationHeader();
         HttpEntity headersOnlyEntity = new HttpEntity(headers);
         return restTemplate.exchange(
-            eventsUrl + endpointWithParams, httpMethod, headersOnlyEntity, String.class, params
+            eventsUrl + endpointWithParams, httpMethod, headersOnlyEntity, String.class, (Object[]) params
         );
     }
 
@@ -60,6 +60,6 @@ public class EventsCommunicationService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(body, headers);
 
-        return restTemplate.exchange(eventsUrl + endpointWithParams, method, entity, String.class, params);
+        return restTemplate.exchange(eventsUrl + endpointWithParams, method, entity, String.class, (Object[]) params);
     }
 }

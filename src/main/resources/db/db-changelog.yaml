@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/schema/SL-1583-secure-passwords.yaml
   - include:
       file: db/schema/SL-1583-secure-passwords-make-email-nullable.yaml
+  - include:
+      file: db/schema/SL-2180-implement-logout.yaml

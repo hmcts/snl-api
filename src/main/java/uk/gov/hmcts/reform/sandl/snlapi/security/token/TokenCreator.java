@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -36,6 +37,7 @@ public class TokenCreator {
         return builder
             .setIssuedAt(now)
             .setExpiration(expiryDate)
+            .setId(UUID.randomUUID().toString())
             .signWith(SignatureAlgorithm.HS512, secret)
             .compact();
     }

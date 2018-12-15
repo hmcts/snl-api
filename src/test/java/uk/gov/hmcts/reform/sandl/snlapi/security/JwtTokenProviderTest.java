@@ -2,17 +2,21 @@ package uk.gov.hmcts.reform.sandl.snlapi.security;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
 import uk.gov.hmcts.reform.sandl.snlapi.security.model.UserPrincipal;
+import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @RunWith(SpringRunner.class)
@@ -28,6 +32,9 @@ public class JwtTokenProviderTest {
     protected String password = "$2y$12$CkfWE9BYsfEO/gtx4NiXHuifYFXnaCTbMVPqJQgfqGn0NZoucN7S6";
     protected String fullname = "fullname";
     protected LocalDateTime passwordLastUpdated = LocalDateTime.now();
+
+    @Mock
+    UserRepository userRepository;
 
     public JwtTokenProviderTest() {
         this.jtp = new JwtTokenProvider(SECRET, JWT_EXPIRY_MS, MAX_EXPIRY_MS);
@@ -67,30 +74,37 @@ public class JwtTokenProviderTest {
     @Test
     public void validateToken_withMaxExpiryDateInPast_shouldReturnFalse() {
         Date dateInPast = new Date(new Date().getTime() - MAX_EXPIRY_MS - 1);
-
-        String token = jtp.generateToken(dateInPast);
-
-        boolean isTokenValid = jtp.parseToken(token).isValid();
-
-        assertThat(isTokenValid).isFalse();
+        assertThat(validateTokenWithDate(dateInPast)).isFalse();
     }
 
     @Test
-    public void validateToken_withMaxExpiryDateInFuture_shouldReturnFalse() {
+    public void validateToken_withMaxExpiryDateInFuture_shouldReturnTrue() {
         Date dateInFuture = new Date(new Date().getTime() + MAX_EXPIRY_MS);
-        String token = jtp.generateToken(dateInFuture);
-
-        boolean isTokenValid = jtp.parseToken(token).isValid();
-
-        assertThat(isTokenValid).isTrue();
+        assertThat(validateTokenWithDate(dateInFuture)).isTrue();
     }
 
     @Test
     public void validateToken_withoutMaxExpiryDate_shouldReturnFalse() {
-        String token = jtp.generateToken(null);
-        boolean isTokenValid = jtp.parseToken(token).isValid();
+        assertThat(validateTokenWithDate(null)).isFalse();
+    }
 
-        assertThat(isTokenValid).isFalse();
+    private boolean validateTokenWithDate(Date date) {
+        String tokenString = jtp.generateToken(date);
+        IUserToken token = jtp.parseToken(tokenString);
+        User.Token userToken = new User.Token();
+        userToken.setId(token.getId());
+        userToken.setMaxExpiry(LocalDateTime.now().plusHours(8));
+        User user = new User();
+        user.setId(1);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setPasswordLastUpdated(passwordLastUpdated);
+        user.setFullName(fullname);
+        user.setResetRequired(false);
+        user.addToken(userToken);
+        when(userRepository.findByUsername(username)).thenReturn(user);
+        boolean isTokenValid = token.isValid(userRepository);
+        return isTokenValid;
     }
 
     private Authentication createAuth() {
