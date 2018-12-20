@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.reform.sandl.snlapi.model.UserSessionDetails;
+import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
 import uk.gov.hmcts.reform.sandl.snlapi.security.CurrentUser;
 import uk.gov.hmcts.reform.sandl.snlapi.security.CustomUserDetailsService;
 import uk.gov.hmcts.reform.sandl.snlapi.security.JwtTokenProvider;
+import uk.gov.hmcts.reform.sandl.snlapi.security.model.User;
 import uk.gov.hmcts.reform.sandl.snlapi.security.requests.LoginRequest;
 import uk.gov.hmcts.reform.sandl.snlapi.security.responses.JwtAuthenticationResponse;
+import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
+import java.time.ZoneId;
 import javax.validation.Valid;
 
 @RestController()
@@ -35,6 +39,9 @@ public class SecurityController {
 
     @Autowired
     CustomUserDetailsService cudService;
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserSessionDetails user(@CurrentUser UserDetails user) {
@@ -59,7 +66,19 @@ public class SecurityController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(tokenProvider.generateNewMaxExpiryDate());
+        saveTokenForUser(jwt, loginRequest.getUsername());
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
+    private void saveTokenForUser(String jwt, String username) {
+        User user = userRepository.findByUsername(username);
+        User.Token userToken = new User.Token();
+        IUserToken token = tokenProvider.parseToken(jwt);
+        userToken.setId(token.getId());
+        userToken.setMaxExpiry(token.getMaxExpiryDate().toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime());
+        user.addToken(userToken);
+        userRepository.saveAndFlush(user);
+    }
 }

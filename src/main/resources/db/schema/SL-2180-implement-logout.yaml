@@ -28,3 +28,19 @@ databaseChangeLog:
         constraintName: pk_user_tokens
         schemaName: public
         tableName: user_tokens
+    - createProcedure:
+        dbms: postgresql
+        procedureBody: |-
+          CREATE OR REPLACE FUNCTION user_tokens_clear_expired() RETURNS trigger
+            AS $$
+              BEGIN
+                DELETE FROM user_tokens WHERE now() > max_expiry;
+              END;
+            $$ LANGUAGE plpgsql;
+    - sql:
+        dbms: postgresql
+        splitStatements: false
+        sql: |-
+          DROP TRIGGER IF EXISTS user_tokens_trigger ON user_tokens;
+          CREATE TRIGGER user_tokens_trigger AFTER INSERT ON user_tokens
+            FOR EACH STATEMENT EXECUTE PROCEDURE user_tokens_clear_expired();
