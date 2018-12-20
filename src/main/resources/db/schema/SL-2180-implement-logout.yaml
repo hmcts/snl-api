@@ -35,6 +35,7 @@ databaseChangeLog:
             AS $$
               BEGIN
                 DELETE FROM user_tokens WHERE now() > max_expiry;
+                RETURN NULL;
               END;
             $$ LANGUAGE plpgsql;
     - sql:
