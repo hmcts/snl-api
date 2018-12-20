@@ -1,20 +1,29 @@
 package uk.gov.hmcts.reform.sandl.snlapi.security;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 public class CustomUserDetailsServiceTest {
 
+    @InjectMocks
     CustomUserDetailsService cuds;
 
-    public CustomUserDetailsServiceTest() {
-        this.cuds = new CustomUserDetailsService();
+    @Mock
+    UserRepository userRepository;
+
+    @Before
+    public void setup() {
+        MockUserRepository.setupMocks(userRepository);
     }
 
     @Test
@@ -32,5 +41,4 @@ public class CustomUserDetailsServiceTest {
 
         cuds.loadUserByUsername(username);
     }
-
 }

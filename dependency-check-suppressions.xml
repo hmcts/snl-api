@@ -20,4 +20,34 @@
     <gav regex="true">^org\.bouncycastle:bcprov-jdk15on:.*$</gav>
     <cpe>cpe:/a:bouncycastle:legion-of-the-bouncy-castle-java-crytography-api</cpe>
   </suppress>
+  <suppress>
+    <notes>Used for testing only not in production</notes>
+    <gav regex="true">^com\.h2database:h2:.*$</gav>
+    <cpe>cpe:/a:h2database:h2</cpe>
+  </suppress>
+  <suppress>
+    <notes>part of spring boot jpa, required migration to spring boot 2.0, covered by SL-2115</notes>
+    <gav regex="true">^dom4j:dom4j:.*$</gav>
+    <cve>CVE-2018-1000632</cve>
+  </suppress>
+  <suppress>
+    <notes>new issue to be addressed by SL-2195</notes>
+    <gav regex="true">^org\.slf4j:log4j-over-slf4j:.*$</gav>
+    <cpe>cpe:/a:slf4j:slf4j</cpe>
+  </suppress>
+  <suppress>
+    <notes>new issue to be addressed by SL-2195</notes>
+    <gav regex="true">^org\.slf4j:slf4j-api:.*$</gav>
+    <cpe>cpe:/a:slf4j:slf4j</cpe>
+  </suppress>
+  <suppress>
+    <notes>new issue to be addressed by SL-2195</notes>
+    <gav regex="true">^org\.slf4j:jul-to-slf4j:.*$</gav>
+    <cpe>cpe:/a:slf4j:slf4j</cpe>
+  </suppress>
+  <suppress>
+    <notes>new issue to be addressed by SL-2195</notes>
+    <gav regex="true">^org\.slf4j:jcl-over-slf4j:.*$</gav>
+    <cpe>cpe:/a:slf4j:slf4j</cpe>
+  </suppress>
 </suppressions>

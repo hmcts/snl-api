@@ -7,7 +7,7 @@ def component = "api"
 
 List<LinkedHashMap<String, Object>> secrets = [
     secret('s2s-jwt-secret', 'SNL_S2S_JWT_SECRET'),
-    secret('frontend-jwt-secret', 'SNL_FRONTEND_JWT_SECRET'),
+    secret('frontend-jwt-secret', 'SNL_FRONTEND_JWT_SECRET')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -20,6 +20,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline(type, product, component) {
+    enableDbMigration()
     echo env.CHANGE_TITLE
     if (env.CHANGE_TITLE && !env.CHANGE_TITLE.contains('[PREVIEW]')
         && env.CHANGE_TITLE.contains('[AKS]')) {
