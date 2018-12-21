@@ -2,6 +2,7 @@ package uk.gov.hmcts.reform.sandl.snlapi.security;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -25,6 +27,8 @@ public class JwtTokenProviderTest {
     public static final int MAX_EXPIRY_MS = 1000000;
     public static final String SECRET = "secret";
     public static final int JWT_EXPIRY_MS = 1000000;
+
+    @InjectMocks
     protected JwtTokenProvider jtp;
 
     protected String username = "username";
@@ -46,6 +50,7 @@ public class JwtTokenProviderTest {
     @Test
     // Test that integrates generating token and retrieving info from it
     public void generateToken_getUserIdFromJwt_UsernameIsRetrievableFromGeneratedToken() {
+        when(userRepository.findByUsername(username)).thenReturn(getUser());
         String token = jtp.generateToken(jtp.generateNewMaxExpiryDate());
         String actualUsername = jtp.parseToken(token).getUserId();
 
@@ -55,6 +60,7 @@ public class JwtTokenProviderTest {
     @Test
     public void generateToken_getMaxExpiryDateFromJwt_UsernameIsRetrievableFromGeneratedToken() {
         Date expected = new Date(new Date().getTime() + MAX_EXPIRY_MS);
+        when(userRepository.findByUsername(username)).thenReturn(getUser());
         String token = jtp.generateToken(jtp.generateNewMaxExpiryDate());
 
         Date maxExpiryDate = jtp.parseToken(token).getMaxExpiryDate();
@@ -64,17 +70,15 @@ public class JwtTokenProviderTest {
     }
 
     @Test
-    public void generateToken_getMaxExpiryDateFromJwt_whenFieldIsNotGiven_returnsNull() {
-        String token = jtp.generateToken(null);
-
-        Date maxExpiryDate = jtp.parseToken(token).getMaxExpiryDate();
-        assertThat(maxExpiryDate).isNull();
-    }
-
-    @Test
     public void validateToken_withMaxExpiryDateInPast_shouldReturnFalse() {
         Date dateInPast = new Date(new Date().getTime() - MAX_EXPIRY_MS - 1);
         assertThat(validateTokenWithDate(dateInPast)).isFalse();
+    }
+
+    @Test
+    public void generateToken_withNullDate_shouldThrowNullPointerException() {
+        Throwable thrown = catchThrowable(() -> jtp.generateToken(null));
+        assertThat(thrown).isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -83,17 +87,7 @@ public class JwtTokenProviderTest {
         assertThat(validateTokenWithDate(dateInFuture)).isTrue();
     }
 
-    @Test
-    public void validateToken_withoutMaxExpiryDate_shouldReturnFalse() {
-        assertThat(validateTokenWithDate(null)).isFalse();
-    }
-
-    private boolean validateTokenWithDate(Date date) {
-        String tokenString = jtp.generateToken(date);
-        IUserToken token = jtp.parseToken(tokenString);
-        User.Token userToken = new User.Token();
-        userToken.setId(token.getId());
-        userToken.setMaxExpiry(LocalDateTime.now().plusHours(8));
+    private User getUser() {
         User user = new User();
         user.setId(1);
         user.setUsername(username);
@@ -101,9 +95,14 @@ public class JwtTokenProviderTest {
         user.setPasswordLastUpdated(passwordLastUpdated);
         user.setFullName(fullname);
         user.setResetRequired(false);
-        user.addToken(userToken);
-        when(userRepository.findByUsername(username)).thenReturn(user);
-        boolean isTokenValid = token.isValid(userRepository);
+        return user;
+    }
+
+    private boolean validateTokenWithDate(Date date) {
+        when(userRepository.findByUsername(username)).thenReturn(getUser());
+        String tokenString = jtp.generateToken(date);
+        IUserToken token = jtp.parseToken(tokenString);
+        boolean isTokenValid = token.isValid();
         return isTokenValid;
     }
 

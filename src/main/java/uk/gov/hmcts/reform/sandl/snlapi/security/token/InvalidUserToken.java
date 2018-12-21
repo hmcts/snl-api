@@ -2,7 +2,6 @@ package uk.gov.hmcts.reform.sandl.snlapi.security.token;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,7 +11,7 @@ public class InvalidUserToken implements IUserToken {
     }
 
     @Override
-    public boolean isValid(UserRepository userRepository) {
+    public boolean isValid() {
         return false;
     }
 

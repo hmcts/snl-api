@@ -68,6 +68,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     public void doFilterInternal_withValidTokenAsProperUser_shouldAuthenticate() throws ServletException, IOException {
         when(tokenProvider.parseToken(TOKEN_VALUE)).thenReturn(createSampleUser());
+        when(tokenProvider.isTokenRecognisedForUser(any())).thenReturn(true);
 
         request.addHeader("Authorization", BEARER + TOKEN_VALUE);
 
@@ -81,6 +82,7 @@ public class JwtAuthenticationFilterTest {
     @Test
     public void doFilterInternal_withInvalidToken_shouldNotAuthenticate() throws ServletException, IOException {
         when(tokenProvider.parseToken(INVALID_TOKEN)).thenReturn(createInvalidUser());
+        when(tokenProvider.isTokenRecognisedForUser(any())).thenReturn(false);
 
         request.addHeader("Authorization", BEARER + INVALID_TOKEN);
 
@@ -110,7 +112,7 @@ public class JwtAuthenticationFilterTest {
             }
 
             @Override
-            public boolean isValid(UserRepository userRepository) {
+            public boolean isValid() {
                 return true;
             }
 
@@ -119,6 +121,7 @@ public class JwtAuthenticationFilterTest {
                 return null;
             }
         });
+        when(tokenProvider.isTokenRecognisedForUser(any())).thenReturn(false);
 
         request.addHeader("Authorization", BEARER + TOKEN_VALUE);
 
@@ -130,9 +133,10 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    public void doFilterInternal_withValidToken_shouldResponseWithNewToken() throws ServletException, IOException {
+    public void doFilterInternal_withValidToken_shouldRespondWithNewToken() throws ServletException, IOException {
         when(tokenProvider.parseToken(TOKEN_VALUE)).thenReturn(createSampleUser());
         when(tokenProvider.generateToken(any())).thenReturn("dummy data simulating jwt");
+        when(tokenProvider.isTokenRecognisedForUser(any())).thenReturn(true);
 
         request.addHeader("Authorization", BEARER + TOKEN_VALUE);
 
@@ -160,7 +164,7 @@ public class JwtAuthenticationFilterTest {
             }
 
             @Override
-            public boolean isValid(UserRepository userRepository) {
+            public boolean isValid() {
                 return true;
             }
 
@@ -189,7 +193,7 @@ public class JwtAuthenticationFilterTest {
             }
 
             @Override
-            public boolean isValid(UserRepository userRepository) {
+            public boolean isValid() {
                 return true;
             }
 

@@ -1,5 +1,6 @@
 plugins {
   id 'application'
+  id "java"
   id 'checkstyle'
   id 'pmd'
   id 'jacoco'
@@ -17,6 +18,17 @@ version = '0.0.1'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+apply plugin: 'java'
+apply plugin: 'idea'
+
+idea {
+  module {
+    // stays here but to consider if this is a good idea longterm
+    // because it requires to build the project at lest once so intellij
+    // it up
+    sourceDirs += file("out/production/classes/production")
+  }
+}
 checkstyle {
   maxWarnings = 0
   toolVersion = '8.8'
@@ -76,6 +88,7 @@ def versions = [
 dependencies {
   compile 'org.projectlombok:lombok:1.18.2'
   apt "org.projectlombok:lombok:1.18.2"
+  annotationProcessor 'org.projectlombok:lombok:1.18.2'
 
   compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
 
@@ -93,6 +106,7 @@ dependencies {
 
   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
   compile group: 'org.liquibase', name: 'liquibase-core', version: '3.6.2'
+  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.7'
 
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
@@ -107,7 +121,8 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: '1.1.0'
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: versions.springHystrix
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.5'
+  compile "org.hibernate:hibernate-jpamodelgen:5.2.17.Final"
+  annotationProcessor "org.hibernate:hibernate-jpamodelgen:5.2.17.Final"
 
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.6'

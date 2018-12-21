@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uk.gov.hmcts.reform.sandl.snlapi.repositories.UserRepository;
 import uk.gov.hmcts.reform.sandl.snlapi.security.token.IUserToken;
 
 import java.io.IOException;
@@ -27,8 +26,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtTokenProvider tokenProvider;
     @Autowired
     private CustomUserDetailsService userDetailsService;
-    @Autowired
-    private UserRepository userRepository;
     @Value("${management.security.newTokenHeaderName}")
     private String newTokenHeaderName;
 
@@ -39,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
             IUserToken userToken = tokenProvider.parseToken(jwt);
 
-            if (userToken.isValid(userRepository)) {
+            if (userToken.isValid() && tokenProvider.isTokenRecognisedForUser(userToken)) {
                 String userId = userToken.getUserId();
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
