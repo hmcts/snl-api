@@ -5,7 +5,7 @@ services:
     container_name: snl-api-db
     build: ./docker/snl-api-db
     networks:
-      - snl-api-network
+      - snl-network
     ports:
       - "5434:5432"
     environment:
@@ -31,17 +31,18 @@ services:
       - REFORM_SERVICE_NAME
       - REFORM_TEAM
       - REFORM_ENVIRONMENT
-      - SNL_EVENTS_URL=http://localhost:8092
-      - SNL_API_DB_HOST=snl-api-db
-      - SNL_API_DB_PORT=5432
+      - SNL_EVENTS_URL=http://host.docker.internal:8092
+      - SNL_API_DB_HOST=host.docker.internal
+      - SNL_API_DB_PORT=5434
       - SNL_API_DB_NAME=snl
       - SNL_API_DB_USERNAME=snluser
       - SNL_API_DB_PASSWORD=snlpass
     ports:
       - 8090:8090
     networks:
-      - snl-api-network
+      - snl-network
 networks:
-  snl-api-network:
+  snl-network:
     driver: bridge
+    name: snl-network
 
